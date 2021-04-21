@@ -1,0 +1,165 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Operator", 
+      "version": "v1", 
+      "group": "operators.coreos.com"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "Operator represents a cluster operator.", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "OperatorStatus defines the observed state of an Operator and its components", 
+      "properties": {
+        "components": {
+          "required": [
+            "labelSelector"
+          ], 
+          "type": "object", 
+          "description": "Components describes resources that compose the operator.", 
+          "properties": {
+            "refs": {
+              "items": {
+                "type": "object", 
+                "description": "RichReference is a reference to a resource, enriched with its status conditions.", 
+                "properties": {
+                  "kind": {
+                    "type": "string", 
+                    "description": "Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+                  }, 
+                  "name": {
+                    "type": "string", 
+                    "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names"
+                  }, 
+                  "namespace": {
+                    "type": "string", 
+                    "description": "Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/"
+                  }, 
+                  "apiVersion": {
+                    "type": "string", 
+                    "description": "API version of the referent."
+                  }, 
+                  "fieldPath": {
+                    "type": "string", 
+                    "description": "If referring to a piece of an object instead of an entire object, this string should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers[2]. For example, if the object reference is to a container within a pod, this would take on a value like: \"spec.containers{name}\" (where \"name\" refers to the name of the container that triggered the event) or if no container name is specified \"spec.containers[2]\" (container with index 2 in this pod). This syntax is chosen only to have some well-defined way of referencing a part of an object. TODO: this design is not final and this field is subject to change in the future."
+                  }, 
+                  "resourceVersion": {
+                    "type": "string", 
+                    "description": "Specific resourceVersion to which this reference is made, if any. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency"
+                  }, 
+                  "conditions": {
+                    "items": {
+                      "required": [
+                        "status", 
+                        "type"
+                      ], 
+                      "type": "object", 
+                      "description": "Condition represent the latest available observations of an component's state.", 
+                      "properties": {
+                        "status": {
+                          "type": "string", 
+                          "description": "Status of the condition, one of True, False, Unknown."
+                        }, 
+                        "lastUpdateTime": {
+                          "type": "string", 
+                          "description": "Last time the condition was probed", 
+                          "format": "date-time"
+                        }, 
+                        "lastTransitionTime": {
+                          "type": "string", 
+                          "description": "Last time the condition transitioned from one status to another.", 
+                          "format": "date-time"
+                        }, 
+                        "reason": {
+                          "type": "string", 
+                          "description": "The reason for the condition's last transition."
+                        }, 
+                        "message": {
+                          "type": "string", 
+                          "description": "A human readable message indicating details about the transition."
+                        }, 
+                        "type": {
+                          "type": "string", 
+                          "description": "Type of condition."
+                        }
+                      }
+                    }, 
+                    "type": "array", 
+                    "description": "Conditions represents the latest state of the component."
+                  }, 
+                  "uid": {
+                    "type": "string", 
+                    "description": "UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids"
+                  }
+                }
+              }, 
+              "type": "array", 
+              "description": "Refs are a set of references to the operator's component resources, selected with LabelSelector."
+            }, 
+            "labelSelector": {
+              "type": "object", 
+              "description": "LabelSelector is a label query over a set of resources used to select the operator's components", 
+              "properties": {
+                "matchLabels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  }, 
+                  "type": "object", 
+                  "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                }, 
+                "matchExpressions": {
+                  "items": {
+                    "required": [
+                      "key", 
+                      "operator"
+                    ], 
+                    "type": "object", 
+                    "description": "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.", 
+                    "properties": {
+                      "operator": {
+                        "type": "string", 
+                        "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                      }, 
+                      "values": {
+                        "items": {
+                          "type": "string"
+                        }, 
+                        "type": "array", 
+                        "description": "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                      }, 
+                      "key": {
+                        "type": "string", 
+                        "description": "key is the label key that the selector applies to."
+                      }
+                    }
+                  }, 
+                  "type": "array", 
+                  "description": "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "OperatorSpec defines the desired state of Operator"
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

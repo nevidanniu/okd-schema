@@ -1,0 +1,11 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Kiali", 
+      "version": "v1alpha1", 
+      "group": "kiali.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object"
+}

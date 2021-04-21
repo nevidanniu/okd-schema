@@ -1,0 +1,85 @@
+{
+  "description": "Proxy holds cluster-wide information on how to configure default proxies for the cluster. The canonical name is `cluster`", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Proxy", 
+      "version": "v1", 
+      "group": "config.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "status holds observed values from the cluster. They may not be overridden.", 
+      "properties": {
+        "httpProxy": {
+          "type": "string", 
+          "description": "httpProxy is the URL of the proxy for HTTP requests."
+        }, 
+        "noProxy": {
+          "type": "string", 
+          "description": "noProxy is a comma-separated list of hostnames and/or CIDRs for which the proxy should not be used."
+        }, 
+        "httpsProxy": {
+          "type": "string", 
+          "description": "httpsProxy is the URL of the proxy for HTTPS requests."
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "Spec holds user-settable values for the proxy configuration", 
+      "properties": {
+        "readinessEndpoints": {
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "readinessEndpoints is a list of endpoints used to verify readiness of the proxy."
+        }, 
+        "httpProxy": {
+          "type": "string", 
+          "description": "httpProxy is the URL of the proxy for HTTP requests.  Empty means unset and will not result in an env var."
+        }, 
+        "trustedCA": {
+          "required": [
+            "name"
+          ], 
+          "type": "object", 
+          "description": "trustedCA is a reference to a ConfigMap containing a CA certificate bundle. The trustedCA field should only be consumed by a proxy validator. The validator is responsible for reading the certificate bundle from the required key \"ca-bundle.crt\", merging it with the system default trust bundle, and writing the merged trust bundle to a ConfigMap named \"trusted-ca-bundle\" in the \"openshift-config-managed\" namespace. Clients that expect to make proxy connections must use the trusted-ca-bundle for all HTTPS requests to the proxy, and may use the trusted-ca-bundle for non-proxy HTTPS requests as well. \n The namespace for the ConfigMap referenced by trustedCA is \"openshift-config\". Here is an example ConfigMap (in yaml): \n apiVersion: v1 kind: ConfigMap metadata:  name: user-ca-bundle  namespace: openshift-config  data:    ca-bundle.crt: |      -----BEGIN CERTIFICATE-----      Custom CA certificate bundle.      -----END CERTIFICATE-----", 
+          "properties": {
+            "name": {
+              "type": "string", 
+              "description": "name is the metadata.name of the referenced config map"
+            }
+          }
+        }, 
+        "noProxy": {
+          "type": "string", 
+          "description": "noProxy is a comma-separated list of hostnames and/or CIDRs for which the proxy should not be used. Empty means unset and will not result in an env var."
+        }, 
+        "httpsProxy": {
+          "type": "string", 
+          "description": "httpsProxy is the URL of the proxy for HTTPS requests.  Empty means unset and will not result in an env var."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

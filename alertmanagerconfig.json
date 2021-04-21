@@ -1,0 +1,2570 @@
+{
+  "description": "AlertmanagerConfig defines a namespaced AlertmanagerConfig to be aggregated across multiple namespaces configuring one Alertmanager cluster.", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "AlertmanagerConfig", 
+      "version": "v1alpha1", 
+      "group": "monitoring.coreos.com"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "AlertmanagerConfigSpec is a specification of the desired behavior of the Alertmanager configuration. By definition, the Alertmanager configuration only applies to alerts for which the `namespace` label is equal to the namespace of the AlertmanagerConfig resource.", 
+      "properties": {
+        "route": {
+          "type": "object", 
+          "description": "The Alertmanager route definition for alerts matching the resource\u2019s namespace. It will be added to the generated Alertmanager configuration as a first-level route.", 
+          "properties": {
+            "repeatInterval": {
+              "type": "string", 
+              "description": "How long to wait before repeating the last notification. Must match the regular expression `[0-9]+(ms|s|m|h)` (milliseconds seconds minutes hours)."
+            }, 
+            "groupInterval": {
+              "type": "string", 
+              "description": "How long to wait before sending an updated notification. Must match the regular expression `[0-9]+(ms|s|m|h)` (milliseconds seconds minutes hours)."
+            }, 
+            "groupWait": {
+              "type": "string", 
+              "description": "How long to wait before sending the initial notification. Must match the regular expression `[0-9]+(ms|s|m|h)` (milliseconds seconds minutes hours)."
+            }, 
+            "matchers": {
+              "items": {
+                "required": [
+                  "name", 
+                  "value"
+                ], 
+                "type": "object", 
+                "description": "Matcher defines how to match on alert's labels.", 
+                "properties": {
+                  "regex": {
+                    "type": "boolean", 
+                    "description": "Whether to match on equality (false) or regular-expression (true)."
+                  }, 
+                  "name": {
+                    "type": "string", 
+                    "description": "Label to match."
+                  }, 
+                  "value": {
+                    "type": "string", 
+                    "description": "Label value to match."
+                  }
+                }
+              }, 
+              "type": "array", 
+              "description": "List of matchers that the alert\u2019s labels should match. For the first level route, the operator removes any existing equality and regexp matcher on the `namespace` label and adds a `namespace: <object namespace>` matcher."
+            }, 
+            "continue": {
+              "type": "boolean", 
+              "description": "Boolean indicating whether an alert should continue matching subsequent sibling nodes. It will always be overridden to true for the first-level route by the Prometheus operator."
+            }, 
+            "receiver": {
+              "type": "string", 
+              "description": "Name of the receiver for this route. If present, it should be listed in the `receivers` field. The field can be omitted only for nested routes otherwise it is mandatory."
+            }, 
+            "routes": {
+              "items": {
+                "x-kubernetes-preserve-unknown-fields": true
+              }, 
+              "type": "array", 
+              "description": "Child routes."
+            }, 
+            "groupBy": {
+              "items": {
+                "type": "string"
+              }, 
+              "type": "array", 
+              "description": "List of labels to group by."
+            }
+          }
+        }, 
+        "inhibitRules": {
+          "items": {
+            "type": "object", 
+            "description": "InhibitRule defines an inhibition rule that allows to mute alerts when other alerts are already firing. See https://prometheus.io/docs/alerting/latest/configuration/#inhibit_rule", 
+            "properties": {
+              "sourceMatch": {
+                "items": {
+                  "required": [
+                    "name", 
+                    "value"
+                  ], 
+                  "type": "object", 
+                  "description": "Matcher defines how to match on alert's labels.", 
+                  "properties": {
+                    "regex": {
+                      "type": "boolean", 
+                      "description": "Whether to match on equality (false) or regular-expression (true)."
+                    }, 
+                    "name": {
+                      "type": "string", 
+                      "description": "Label to match."
+                    }, 
+                    "value": {
+                      "type": "string", 
+                      "description": "Label value to match."
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "Matchers for which one or more alerts have to exist for the inhibition to take effect. The operator enforces that the alert matches the resource\u2019s namespace."
+              }, 
+              "equal": {
+                "items": {
+                  "type": "string"
+                }, 
+                "type": "array", 
+                "description": "Labels that must have an equal value in the source and target alert for the inhibition to take effect."
+              }, 
+              "targetMatch": {
+                "items": {
+                  "required": [
+                    "name", 
+                    "value"
+                  ], 
+                  "type": "object", 
+                  "description": "Matcher defines how to match on alert's labels.", 
+                  "properties": {
+                    "regex": {
+                      "type": "boolean", 
+                      "description": "Whether to match on equality (false) or regular-expression (true)."
+                    }, 
+                    "name": {
+                      "type": "string", 
+                      "description": "Label to match."
+                    }, 
+                    "value": {
+                      "type": "string", 
+                      "description": "Label value to match."
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "Matchers that have to be fulfilled in the alerts to be muted. The operator enforces that the alert matches the resource\u2019s namespace."
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "List of inhibition rules. The rules will only apply to alerts matching the resource\u2019s namespace."
+        }, 
+        "receivers": {
+          "items": {
+            "required": [
+              "name"
+            ], 
+            "type": "object", 
+            "description": "Receiver defines one or more notification integrations.", 
+            "properties": {
+              "name": {
+                "type": "string", 
+                "description": "Name of the receiver. Must be unique across all items from the list."
+              }, 
+              "pagerdutyConfigs": {
+                "items": {
+                  "type": "object", 
+                  "description": "PagerDutyConfig configures notifications via PagerDuty. See https://prometheus.io/docs/alerting/latest/configuration/#pagerduty_config", 
+                  "properties": {
+                    "clientURL": {
+                      "type": "string", 
+                      "description": "Backlink to the sender of notification."
+                    }, 
+                    "group": {
+                      "type": "string", 
+                      "description": "A cluster or grouping of sources."
+                    }, 
+                    "description": {
+                      "type": "string", 
+                      "description": "Description of the incident."
+                    }, 
+                    "url": {
+                      "type": "string", 
+                      "description": "The URL to send requests to."
+                    }, 
+                    "severity": {
+                      "type": "string", 
+                      "description": "Severity of the incident."
+                    }, 
+                    "component": {
+                      "type": "string", 
+                      "description": "The part or component of the affected system that is broken."
+                    }, 
+                    "httpConfig": {
+                      "type": "object", 
+                      "description": "HTTP client configuration.", 
+                      "properties": {
+                        "tlsConfig": {
+                          "type": "object", 
+                          "description": "TLS configuration for the client.", 
+                          "properties": {
+                            "cert": {
+                              "type": "object", 
+                              "description": "Struct containing the client cert file for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "serverName": {
+                              "type": "string", 
+                              "description": "Used to verify the hostname for the targets."
+                            }, 
+                            "keySecret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing the client key file for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "ca": {
+                              "type": "object", 
+                              "description": "Struct containing the CA cert to use for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "insecureSkipVerify": {
+                              "type": "boolean", 
+                              "description": "Disable target certificate validation."
+                            }
+                          }
+                        }, 
+                        "proxyURL": {
+                          "type": "string", 
+                          "description": "Optional proxy URL."
+                        }, 
+                        "basicAuth": {
+                          "type": "object", 
+                          "description": "BasicAuth for the client.", 
+                          "properties": {
+                            "username": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "password": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "bearerTokenSecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "client": {
+                      "type": "string", 
+                      "description": "Client identification."
+                    }, 
+                    "details": {
+                      "items": {
+                        "required": [
+                          "key", 
+                          "value"
+                        ], 
+                        "type": "object", 
+                        "description": "KeyValue defines a (key, value) tuple.", 
+                        "properties": {
+                          "value": {
+                            "type": "string", 
+                            "description": "Value of the tuple."
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "Key of the tuple."
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "Arbitrary key/value pairs that provide further detail about the incident."
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "serviceKey": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The secret's key that contains the PagerDuty service key (when using integration type \"Prometheus\"). Either this field or `routingKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "class": {
+                      "type": "string", 
+                      "description": "The class/type of the event."
+                    }, 
+                    "routingKey": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The secret's key that contains the PagerDuty integration key (when using Events API v2). Either this field or `serviceKey` needs to be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of PagerDuty configurations."
+              }, 
+              "opsgenieConfigs": {
+                "items": {
+                  "type": "object", 
+                  "description": "OpsGenieConfig configures notifications via OpsGenie. See https://prometheus.io/docs/alerting/latest/configuration/#opsgenie_config", 
+                  "properties": {
+                    "priority": {
+                      "type": "string", 
+                      "description": "Priority level of alert. Possible values are P1, P2, P3, P4, and P5."
+                    }, 
+                    "note": {
+                      "type": "string", 
+                      "description": "Additional alert note."
+                    }, 
+                    "description": {
+                      "type": "string", 
+                      "description": "Description of the incident."
+                    }, 
+                    "tags": {
+                      "type": "string", 
+                      "description": "Comma separated list of tags attached to the notifications."
+                    }, 
+                    "httpConfig": {
+                      "type": "object", 
+                      "description": "HTTP client configuration.", 
+                      "properties": {
+                        "tlsConfig": {
+                          "type": "object", 
+                          "description": "TLS configuration for the client.", 
+                          "properties": {
+                            "cert": {
+                              "type": "object", 
+                              "description": "Struct containing the client cert file for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "serverName": {
+                              "type": "string", 
+                              "description": "Used to verify the hostname for the targets."
+                            }, 
+                            "keySecret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing the client key file for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "ca": {
+                              "type": "object", 
+                              "description": "Struct containing the CA cert to use for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "insecureSkipVerify": {
+                              "type": "boolean", 
+                              "description": "Disable target certificate validation."
+                            }
+                          }
+                        }, 
+                        "proxyURL": {
+                          "type": "string", 
+                          "description": "Optional proxy URL."
+                        }, 
+                        "basicAuth": {
+                          "type": "object", 
+                          "description": "BasicAuth for the client.", 
+                          "properties": {
+                            "username": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "password": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "bearerTokenSecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "source": {
+                      "type": "string", 
+                      "description": "Backlink to the sender of the notification."
+                    }, 
+                    "apiKey": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The secret's key that contains the OpsGenie API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "details": {
+                      "items": {
+                        "required": [
+                          "key", 
+                          "value"
+                        ], 
+                        "type": "object", 
+                        "description": "KeyValue defines a (key, value) tuple.", 
+                        "properties": {
+                          "value": {
+                            "type": "string", 
+                            "description": "Value of the tuple."
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "Key of the tuple."
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "A set of arbitrary key/value pairs that provide further detail about the incident."
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "message": {
+                      "type": "string", 
+                      "description": "Alert text limited to 130 characters."
+                    }, 
+                    "apiURL": {
+                      "type": "string", 
+                      "description": "The URL to send OpsGenie API requests to."
+                    }, 
+                    "responders": {
+                      "items": {
+                        "type": "object", 
+                        "description": "OpsGenieConfigResponder defines a responder to an incident. One of id, name or username has to be defined.", 
+                        "properties": {
+                          "username": {
+                            "type": "string", 
+                            "description": "Username of the responder."
+                          }, 
+                          "type": {
+                            "type": "string", 
+                            "description": "Type of responder."
+                          }, 
+                          "id": {
+                            "type": "string", 
+                            "description": "ID of the responder."
+                          }, 
+                          "name": {
+                            "type": "string", 
+                            "description": "Name of the responder."
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "List of responders responsible for notifications."
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of OpsGenie configurations."
+              }, 
+              "wechatConfigs": {
+                "items": {
+                  "type": "object", 
+                  "description": "WeChatConfig configures notifications via WeChat. See https://prometheus.io/docs/alerting/latest/configuration/#wechat_config", 
+                  "properties": {
+                    "toTag": {
+                      "type": "string"
+                    }, 
+                    "corpID": {
+                      "type": "string", 
+                      "description": "The corp id for authentication."
+                    }, 
+                    "apiSecret": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The secret's key that contains the WeChat API key. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "messageType": {
+                      "type": "string"
+                    }, 
+                    "httpConfig": {
+                      "type": "object", 
+                      "description": "HTTP client configuration.", 
+                      "properties": {
+                        "tlsConfig": {
+                          "type": "object", 
+                          "description": "TLS configuration for the client.", 
+                          "properties": {
+                            "cert": {
+                              "type": "object", 
+                              "description": "Struct containing the client cert file for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "serverName": {
+                              "type": "string", 
+                              "description": "Used to verify the hostname for the targets."
+                            }, 
+                            "keySecret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing the client key file for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "ca": {
+                              "type": "object", 
+                              "description": "Struct containing the CA cert to use for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "insecureSkipVerify": {
+                              "type": "boolean", 
+                              "description": "Disable target certificate validation."
+                            }
+                          }
+                        }, 
+                        "proxyURL": {
+                          "type": "string", 
+                          "description": "Optional proxy URL."
+                        }, 
+                        "basicAuth": {
+                          "type": "object", 
+                          "description": "BasicAuth for the client.", 
+                          "properties": {
+                            "username": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "password": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "bearerTokenSecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "toUser": {
+                      "type": "string"
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "message": {
+                      "type": "string", 
+                      "description": "API request data as defined by the WeChat API."
+                    }, 
+                    "agentID": {
+                      "type": "string"
+                    }, 
+                    "apiURL": {
+                      "type": "string", 
+                      "description": "The WeChat API URL."
+                    }, 
+                    "toParty": {
+                      "type": "string"
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of WeChat configurations."
+              }, 
+              "slackConfigs": {
+                "items": {
+                  "type": "object", 
+                  "description": "SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config", 
+                  "properties": {
+                    "color": {
+                      "type": "string"
+                    }, 
+                    "text": {
+                      "type": "string"
+                    }, 
+                    "actions": {
+                      "items": {
+                        "required": [
+                          "text", 
+                          "type"
+                        ], 
+                        "type": "object", 
+                        "description": "SlackAction configures a single Slack action that is sent with each notification. See https://api.slack.com/docs/message-attachments#action_fields and https://api.slack.com/docs/message-buttons for more information.", 
+                        "properties": {
+                          "style": {
+                            "type": "string"
+                          }, 
+                          "name": {
+                            "type": "string"
+                          }, 
+                          "confirm": {
+                            "required": [
+                              "text"
+                            ], 
+                            "type": "object", 
+                            "description": "SlackConfirmationField protect users from destructive actions or particularly distinguished decisions by asking them to confirm their button click one more time. See https://api.slack.com/docs/interactive-message-field-guide#confirmation_fields for more information.", 
+                            "properties": {
+                              "text": {
+                                "type": "string"
+                              }, 
+                              "dismissText": {
+                                "type": "string"
+                              }, 
+                              "okText": {
+                                "type": "string"
+                              }, 
+                              "title": {
+                                "type": "string"
+                              }
+                            }
+                          }, 
+                          "url": {
+                            "type": "string"
+                          }, 
+                          "text": {
+                            "type": "string"
+                          }, 
+                          "value": {
+                            "type": "string"
+                          }, 
+                          "type": {
+                            "type": "string"
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "A list of Slack actions that are sent with each notification."
+                    }, 
+                    "pretext": {
+                      "type": "string"
+                    }, 
+                    "iconEmoji": {
+                      "type": "string"
+                    }, 
+                    "shortFields": {
+                      "type": "boolean"
+                    }, 
+                    "thumbURL": {
+                      "type": "string"
+                    }, 
+                    "title": {
+                      "type": "string"
+                    }, 
+                    "imageURL": {
+                      "type": "string"
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "apiURL": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The secret's key that contains the Slack webhook URL. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "channel": {
+                      "type": "string", 
+                      "description": "The channel or user to send notifications to."
+                    }, 
+                    "username": {
+                      "type": "string"
+                    }, 
+                    "callbackId": {
+                      "type": "string"
+                    }, 
+                    "linkNames": {
+                      "type": "boolean"
+                    }, 
+                    "httpConfig": {
+                      "type": "object", 
+                      "description": "HTTP client configuration.", 
+                      "properties": {
+                        "tlsConfig": {
+                          "type": "object", 
+                          "description": "TLS configuration for the client.", 
+                          "properties": {
+                            "cert": {
+                              "type": "object", 
+                              "description": "Struct containing the client cert file for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "serverName": {
+                              "type": "string", 
+                              "description": "Used to verify the hostname for the targets."
+                            }, 
+                            "keySecret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing the client key file for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "ca": {
+                              "type": "object", 
+                              "description": "Struct containing the CA cert to use for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "insecureSkipVerify": {
+                              "type": "boolean", 
+                              "description": "Disable target certificate validation."
+                            }
+                          }
+                        }, 
+                        "proxyURL": {
+                          "type": "string", 
+                          "description": "Optional proxy URL."
+                        }, 
+                        "basicAuth": {
+                          "type": "object", 
+                          "description": "BasicAuth for the client.", 
+                          "properties": {
+                            "username": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "password": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "bearerTokenSecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "iconURL": {
+                      "type": "string"
+                    }, 
+                    "mrkdwnIn": {
+                      "items": {
+                        "type": "string"
+                      }, 
+                      "type": "array"
+                    }, 
+                    "titleLink": {
+                      "type": "string"
+                    }, 
+                    "footer": {
+                      "type": "string"
+                    }, 
+                    "fields": {
+                      "items": {
+                        "required": [
+                          "title", 
+                          "value"
+                        ], 
+                        "type": "object", 
+                        "description": "SlackField configures a single Slack field that is sent with each notification. Each field must contain a title, value, and optionally, a boolean value to indicate if the field is short enough to be displayed next to other fields designated as short. See https://api.slack.com/docs/message-attachments#fields for more information.", 
+                        "properties": {
+                          "short": {
+                            "type": "boolean"
+                          }, 
+                          "value": {
+                            "type": "string"
+                          }, 
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "A list of Slack fields that are sent with each notification."
+                    }, 
+                    "fallback": {
+                      "type": "string"
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of Slack configurations."
+              }, 
+              "victoropsConfigs": {
+                "items": {
+                  "required": [
+                    "routingKey"
+                  ], 
+                  "type": "object", 
+                  "description": "VictorOpsConfig configures notifications via VictorOps. See https://prometheus.io/docs/alerting/latest/configuration/#victorops_config", 
+                  "properties": {
+                    "stateMessage": {
+                      "type": "string", 
+                      "description": "Contains long explanation of the alerted problem."
+                    }, 
+                    "apiKey": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The API key to use when talking to the VictorOps API.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "routingKey": {
+                      "type": "string", 
+                      "description": "A key used to map the alert to a team."
+                    }, 
+                    "messageType": {
+                      "type": "string", 
+                      "description": "Describes the behavior of the alert (CRITICAL, WARNING, INFO)."
+                    }, 
+                    "httpConfig": {
+                      "type": "object", 
+                      "description": "The HTTP client's configuration.", 
+                      "properties": {
+                        "tlsConfig": {
+                          "type": "object", 
+                          "description": "TLS configuration for the client.", 
+                          "properties": {
+                            "cert": {
+                              "type": "object", 
+                              "description": "Struct containing the client cert file for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "serverName": {
+                              "type": "string", 
+                              "description": "Used to verify the hostname for the targets."
+                            }, 
+                            "keySecret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing the client key file for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "ca": {
+                              "type": "object", 
+                              "description": "Struct containing the CA cert to use for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "insecureSkipVerify": {
+                              "type": "boolean", 
+                              "description": "Disable target certificate validation."
+                            }
+                          }
+                        }, 
+                        "proxyURL": {
+                          "type": "string", 
+                          "description": "Optional proxy URL."
+                        }, 
+                        "basicAuth": {
+                          "type": "object", 
+                          "description": "BasicAuth for the client.", 
+                          "properties": {
+                            "username": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "password": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "bearerTokenSecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "entityDisplayName": {
+                      "type": "string", 
+                      "description": "Contains summary of the alerted problem."
+                    }, 
+                    "monitoringTool": {
+                      "type": "string", 
+                      "description": "The monitoring tool the state message is from."
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "customFields": {
+                      "items": {
+                        "required": [
+                          "key", 
+                          "value"
+                        ], 
+                        "type": "object", 
+                        "description": "KeyValue defines a (key, value) tuple.", 
+                        "properties": {
+                          "value": {
+                            "type": "string", 
+                            "description": "Value of the tuple."
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "Key of the tuple."
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "Additional custom fields for notification."
+                    }, 
+                    "apiUrl": {
+                      "type": "string", 
+                      "description": "The VictorOps API URL."
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of VictorOps configurations."
+              }, 
+              "emailConfigs": {
+                "items": {
+                  "type": "object", 
+                  "description": "EmailConfig configures notifications via Email.", 
+                  "properties": {
+                    "smarthost": {
+                      "type": "string", 
+                      "description": "The SMTP host through which emails are sent."
+                    }, 
+                    "tlsConfig": {
+                      "type": "object", 
+                      "description": "TLS configuration", 
+                      "properties": {
+                        "cert": {
+                          "type": "object", 
+                          "description": "Struct containing the client cert file for the targets.", 
+                          "properties": {
+                            "configMap": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "ConfigMap containing data to use for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the ConfigMap or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key to select."
+                                }
+                              }
+                            }, 
+                            "secret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing data to use for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "serverName": {
+                          "type": "string", 
+                          "description": "Used to verify the hostname for the targets."
+                        }, 
+                        "keySecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "Secret containing the client key file for the targets.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }, 
+                        "ca": {
+                          "type": "object", 
+                          "description": "Struct containing the CA cert to use for the targets.", 
+                          "properties": {
+                            "configMap": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "ConfigMap containing data to use for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the ConfigMap or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key to select."
+                                }
+                              }
+                            }, 
+                            "secret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing data to use for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "insecureSkipVerify": {
+                          "type": "boolean", 
+                          "description": "Disable target certificate validation."
+                        }
+                      }
+                    }, 
+                    "from": {
+                      "type": "string", 
+                      "description": "The sender address."
+                    }, 
+                    "requireTLS": {
+                      "type": "boolean", 
+                      "description": "The SMTP TLS requirement. Note that Go does not support unencrypted connections to remote SMTP endpoints."
+                    }, 
+                    "to": {
+                      "type": "string", 
+                      "description": "The email address to send notifications to."
+                    }, 
+                    "authSecret": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "SecretKeySelector selects a key of a Secret.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "text": {
+                      "type": "string", 
+                      "description": "The text body of the email notification."
+                    }, 
+                    "hello": {
+                      "type": "string", 
+                      "description": "The hostname to identify to the SMTP server."
+                    }, 
+                    "headers": {
+                      "items": {
+                        "required": [
+                          "key", 
+                          "value"
+                        ], 
+                        "type": "object", 
+                        "description": "KeyValue defines a (key, value) tuple.", 
+                        "properties": {
+                          "value": {
+                            "type": "string", 
+                            "description": "Value of the tuple."
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "Key of the tuple."
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "Further headers email header key/value pairs. Overrides any headers previously set by the notification implementation."
+                    }, 
+                    "authUsername": {
+                      "type": "string", 
+                      "description": "SMTP authentication information."
+                    }, 
+                    "html": {
+                      "type": "string", 
+                      "description": "The HTML body of the email notification."
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "authIdentity": {
+                      "type": "string"
+                    }, 
+                    "authPassword": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "SecretKeySelector selects a key of a Secret.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of Email configurations."
+              }, 
+              "pushoverConfigs": {
+                "items": {
+                  "type": "object", 
+                  "description": "PushoverConfig configures notifications via Pushover. See https://prometheus.io/docs/alerting/latest/configuration/#pushover_config", 
+                  "properties": {
+                    "sound": {
+                      "type": "string", 
+                      "description": "The name of one of the sounds supported by device clients to override the user's default sound choice"
+                    }, 
+                    "priority": {
+                      "type": "string", 
+                      "description": "Priority, see https://pushover.net/api#priority"
+                    }, 
+                    "retry": {
+                      "type": "string", 
+                      "description": "How often the Pushover servers will send the same notification to the user. Must be at least 30 seconds."
+                    }, 
+                    "expire": {
+                      "type": "string", 
+                      "description": "How long your notification will continue to be retried for, unless the user acknowledges the notification."
+                    }, 
+                    "title": {
+                      "type": "string", 
+                      "description": "Notification title."
+                    }, 
+                    "url": {
+                      "type": "string", 
+                      "description": "A supplementary URL shown alongside the message."
+                    }, 
+                    "urlTitle": {
+                      "type": "string", 
+                      "description": "A title for supplementary URL, otherwise just the URL is shown"
+                    }, 
+                    "httpConfig": {
+                      "type": "object", 
+                      "description": "HTTP client configuration.", 
+                      "properties": {
+                        "tlsConfig": {
+                          "type": "object", 
+                          "description": "TLS configuration for the client.", 
+                          "properties": {
+                            "cert": {
+                              "type": "object", 
+                              "description": "Struct containing the client cert file for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "serverName": {
+                              "type": "string", 
+                              "description": "Used to verify the hostname for the targets."
+                            }, 
+                            "keySecret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing the client key file for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "ca": {
+                              "type": "object", 
+                              "description": "Struct containing the CA cert to use for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "insecureSkipVerify": {
+                              "type": "boolean", 
+                              "description": "Disable target certificate validation."
+                            }
+                          }
+                        }, 
+                        "proxyURL": {
+                          "type": "string", 
+                          "description": "Optional proxy URL."
+                        }, 
+                        "basicAuth": {
+                          "type": "object", 
+                          "description": "BasicAuth for the client.", 
+                          "properties": {
+                            "username": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "password": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "bearerTokenSecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "token": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "Your registered application\u2019s API token, see https://pushover.net/apps", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "html": {
+                      "type": "boolean", 
+                      "description": "Whether notification message is HTML or plain text."
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "userKey": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The recipient user\u2019s user key.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "message": {
+                      "type": "string", 
+                      "description": "Notification message."
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of Pushover configurations."
+              }, 
+              "webhookConfigs": {
+                "items": {
+                  "type": "object", 
+                  "description": "WebhookConfig configures notifications via a generic receiver supporting the webhook payload. See https://prometheus.io/docs/alerting/latest/configuration/#webhook_config", 
+                  "properties": {
+                    "httpConfig": {
+                      "type": "object", 
+                      "description": "HTTP client configuration.", 
+                      "properties": {
+                        "tlsConfig": {
+                          "type": "object", 
+                          "description": "TLS configuration for the client.", 
+                          "properties": {
+                            "cert": {
+                              "type": "object", 
+                              "description": "Struct containing the client cert file for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "serverName": {
+                              "type": "string", 
+                              "description": "Used to verify the hostname for the targets."
+                            }, 
+                            "keySecret": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "Secret containing the client key file for the targets.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "ca": {
+                              "type": "object", 
+                              "description": "Struct containing the CA cert to use for the targets.", 
+                              "properties": {
+                                "configMap": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "ConfigMap containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the ConfigMap or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key to select."
+                                    }
+                                  }
+                                }, 
+                                "secret": {
+                                  "required": [
+                                    "key"
+                                  ], 
+                                  "type": "object", 
+                                  "description": "Secret containing data to use for the targets.", 
+                                  "properties": {
+                                    "optional": {
+                                      "type": "boolean", 
+                                      "description": "Specify whether the Secret or its key must be defined"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                    }, 
+                                    "key": {
+                                      "type": "string", 
+                                      "description": "The key of the secret to select from.  Must be a valid secret key."
+                                    }
+                                  }
+                                }
+                              }
+                            }, 
+                            "insecureSkipVerify": {
+                              "type": "boolean", 
+                              "description": "Disable target certificate validation."
+                            }
+                          }
+                        }, 
+                        "proxyURL": {
+                          "type": "string", 
+                          "description": "Optional proxy URL."
+                        }, 
+                        "basicAuth": {
+                          "type": "object", 
+                          "description": "BasicAuth for the client.", 
+                          "properties": {
+                            "username": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }, 
+                            "password": {
+                              "required": [
+                                "key"
+                              ], 
+                              "type": "object", 
+                              "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                              "properties": {
+                                "optional": {
+                                  "type": "boolean", 
+                                  "description": "Specify whether the Secret or its key must be defined"
+                                }, 
+                                "name": {
+                                  "type": "string", 
+                                  "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                                }, 
+                                "key": {
+                                  "type": "string", 
+                                  "description": "The key of the secret to select from.  Must be a valid secret key."
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "bearerTokenSecret": {
+                          "required": [
+                            "key"
+                          ], 
+                          "type": "object", 
+                          "description": "The secret's key that contains the bearer token to be used by the client for authentication. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                          "properties": {
+                            "optional": {
+                              "type": "boolean", 
+                              "description": "Specify whether the Secret or its key must be defined"
+                            }, 
+                            "name": {
+                              "type": "string", 
+                              "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                            }, 
+                            "key": {
+                              "type": "string", 
+                              "description": "The key of the secret to select from.  Must be a valid secret key."
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "url": {
+                      "type": "string", 
+                      "description": "The URL to send HTTP POST requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined."
+                    }, 
+                    "urlSecret": {
+                      "required": [
+                        "key"
+                      ], 
+                      "type": "object", 
+                      "description": "The secret's key that contains the webhook URL to send HTTP requests to. `urlSecret` takes precedence over `url`. One of `urlSecret` and `url` should be defined. The secret needs to be in the same namespace as the AlertmanagerConfig object and accessible by the Prometheus Operator.", 
+                      "properties": {
+                        "optional": {
+                          "type": "boolean", 
+                          "description": "Specify whether the Secret or its key must be defined"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                        }, 
+                        "key": {
+                          "type": "string", 
+                          "description": "The key of the secret to select from.  Must be a valid secret key."
+                        }
+                      }
+                    }, 
+                    "sendResolved": {
+                      "type": "boolean", 
+                      "description": "Whether or not to notify about resolved alerts."
+                    }, 
+                    "maxAlerts": {
+                      "type": "integer", 
+                      "description": "Maximum number of alerts to be sent per webhook message.", 
+                      "format": "int32"
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of webhook configurations."
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "List of receivers."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

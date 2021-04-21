@@ -1,0 +1,39 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "GlobalNetworkSet", 
+      "version": "v1", 
+      "group": "crd.projectcalico.org"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "GlobalNetworkSet contains a set of arbitrary IP sub-networks/CIDRs that share labels to allow rules to refer to them via selectors.  The labels of GlobalNetworkSet are not namespaced.", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "GlobalNetworkSetSpec contains the specification for a NetworkSet resource.", 
+      "properties": {
+        "nets": {
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "The list of IP networks that belong to this set."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

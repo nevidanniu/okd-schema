@@ -1,0 +1,80 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "IPPool", 
+      "version": "v1", 
+      "group": "crd.projectcalico.org"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "cidr"
+      ], 
+      "type": "object", 
+      "description": "IPPoolSpec contains the specification for an IPPool resource.", 
+      "properties": {
+        "natOutgoing": {
+          "type": "boolean", 
+          "description": "When nat-outgoing is true, packets sent from Calico networked containers in this pool to destinations outside of this pool will be masqueraded."
+        }, 
+        "blockSize": {
+          "type": "integer", 
+          "description": "The block size to use for IP address assignments from this pool. Defaults to 26 for IPv4 and 112 for IPv6."
+        }, 
+        "ipip": {
+          "type": "object", 
+          "description": "Deprecated: this field is only used for APIv1 backwards compatibility. Setting this field is not allowed, this field is for internal use only.", 
+          "properties": {
+            "enabled": {
+              "type": "boolean", 
+              "description": "When enabled is true, ipip tunneling will be used to deliver packets to destinations within this pool."
+            }, 
+            "mode": {
+              "type": "string", 
+              "description": "The IPIP mode.  This can be one of \"always\" or \"cross-subnet\".  A mode of \"always\" will also use IPIP tunneling for routing to destination IP addresses within this pool.  A mode of \"cross-subnet\" will only use IPIP tunneling when the destination node is on a different subnet to the originating node.  The default value (if not specified) is \"always\"."
+            }
+          }
+        }, 
+        "nodeSelector": {
+          "type": "string", 
+          "description": "Allows IPPool to allocate for a specific node by label selector."
+        }, 
+        "disabled": {
+          "type": "boolean", 
+          "description": "When disabled is true, Calico IPAM will not assign addresses from this pool."
+        }, 
+        "ipipMode": {
+          "type": "string", 
+          "description": "Contains configuration for IPIP tunneling for this pool. If not specified, then this is defaulted to \"Never\" (i.e. IPIP tunneling is disabled)."
+        }, 
+        "vxlanMode": {
+          "type": "string", 
+          "description": "Contains configuration for VXLAN tunneling for this pool. If not specified, then this is defaulted to \"Never\" (i.e. VXLAN tunneling is disabled)."
+        }, 
+        "cidr": {
+          "type": "string", 
+          "description": "The pool CIDR."
+        }, 
+        "nat-outgoing": {
+          "type": "boolean", 
+          "description": "Deprecated: this field is only used for APIv1 backwards compatibility. Setting this field is not allowed, this field is for internal use only."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

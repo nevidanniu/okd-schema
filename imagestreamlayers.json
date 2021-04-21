@@ -1,0 +1,43 @@
+{
+  "description": "ImageStreamLayers describes information about the layers referenced by images in this image stream.", 
+  "required": [
+    "blobs", 
+    "images"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ImageStreamLayers", 
+      "version": "v1", 
+      "group": "image.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "images": {
+      "additionalProperties": {
+        "$ref": "_definitions.json#/definitions/com.github.openshift.api.image.v1.ImageBlobReferences"
+      }, 
+      "type": "object", 
+      "description": "images is a map between an image name and the names of the blobs and config that comprise the image."
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "blobs": {
+      "additionalProperties": {
+        "$ref": "_definitions.json#/definitions/com.github.openshift.api.image.v1.ImageLayerData"
+      }, 
+      "type": "object", 
+      "description": "blobs is a map of blob name to metadata about the blob."
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+    }
+  }
+}

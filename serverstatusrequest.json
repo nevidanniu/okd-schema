@@ -1,0 +1,55 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ServerStatusRequest", 
+      "version": "v1", 
+      "group": "velero.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "ServerStatusRequest is a request to access current status information about the Velero server.", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "ServerStatusRequestStatus is the current status of a ServerStatusRequest.", 
+      "properties": {
+        "phase": {
+          "enum": [
+            "New", 
+            "Processed"
+          ], 
+          "type": "string", 
+          "description": "Phase is the current lifecycle phase of the ServerStatusRequest."
+        }, 
+        "serverVersion": {
+          "type": "string", 
+          "description": "ServerVersion is the Velero server version."
+        }, 
+        "processedTimestamp": {
+          "description": "ProcessedTimestamp is when the ServerStatusRequest was processed by the ServerStatusRequestController.", 
+          "format": "date-time"
+        }, 
+        "plugins": {
+          "description": "Plugins list information about the plugins running on the Velero server"
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "ServerStatusRequestSpec is the specification for a ServerStatusRequest."
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

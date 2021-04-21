@@ -1,0 +1,57 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "MachineConfig", 
+      "version": "v1", 
+      "group": "machineconfiguration.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "MachineConfig defines the configuration for a machine", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "MachineConfigSpec is the spec for MachineConfig", 
+      "properties": {
+        "osImageURL": {
+          "type": "string", 
+          "description": "OSImageURL specifies the remote location that will be used to fetch the OS to fetch the OS."
+        }, 
+        "fips": {
+          "type": "boolean", 
+          "description": "FIPS controls FIPS mode"
+        }, 
+        "kernelType": {
+          "type": "string", 
+          "description": "Contains which kernel we want to be running like default (traditional), realtime"
+        }, 
+        "extensions": {
+          "description": "List of additional features that can be enabled on host"
+        }, 
+        "kernelArguments": {
+          "description": "KernelArguments contains a list of kernel arguments to be added"
+        }, 
+        "config": {
+          "required": [
+            "ignition"
+          ], 
+          "description": "Config is a Ignition Config object.", 
+          "x-kubernetes-preserve-unknown-fields": true
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

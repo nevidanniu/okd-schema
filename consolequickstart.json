@@ -1,0 +1,196 @@
+{
+  "description": "ConsoleQuickStart is an extension for guiding user through various workflows in the OpenShift web console.", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ConsoleQuickStart", 
+      "version": "v1", 
+      "group": "console.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "description", 
+        "displayName", 
+        "durationMinutes", 
+        "introduction", 
+        "tasks"
+      ], 
+      "type": "object", 
+      "description": "ConsoleQuickStartSpec is the desired quick start configuration.", 
+      "properties": {
+        "tasks": {
+          "minItems": 1, 
+          "items": {
+            "required": [
+              "description", 
+              "title"
+            ], 
+            "type": "object", 
+            "description": "ConsoleQuickStartTask is a single step in a Quick Start.", 
+            "properties": {
+              "review": {
+                "required": [
+                  "failedTaskHelp", 
+                  "instructions"
+                ], 
+                "type": "object", 
+                "description": "review contains instructions to validate the task is complete. The user will select 'Yes' or 'No'. using a radio button, which indicates whether the step was completed successfully.", 
+                "properties": {
+                  "failedTaskHelp": {
+                    "minLength": 1, 
+                    "type": "string", 
+                    "description": "failedTaskHelp contains suggestions for a failed task review and is shown at the end of task. (includes markdown)"
+                  }, 
+                  "instructions": {
+                    "minLength": 1, 
+                    "type": "string", 
+                    "description": "instructions contains steps that user needs to take in order to validate his work after going through a task. (includes markdown)"
+                  }
+                }
+              }, 
+              "title": {
+                "minLength": 1, 
+                "type": "string", 
+                "description": "title describes the task and is displayed as a step heading."
+              }, 
+              "description": {
+                "minLength": 1, 
+                "type": "string", 
+                "description": "description describes the steps needed to complete the task. (includes markdown)"
+              }, 
+              "summary": {
+                "required": [
+                  "failed", 
+                  "success"
+                ], 
+                "type": "object", 
+                "description": "summary contains information about the passed step.", 
+                "properties": {
+                  "failed": {
+                    "minLength": 1, 
+                    "type": "string", 
+                    "description": "failed briefly describes the unsuccessfully passed task. (includes markdown)", 
+                    "maxLength": 128
+                  }, 
+                  "success": {
+                    "minLength": 1, 
+                    "type": "string", 
+                    "description": "success describes the succesfully passed task."
+                  }
+                }
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "tasks is the list of steps the user has to perform to complete the Quick Start."
+        }, 
+        "displayName": {
+          "minLength": 1, 
+          "type": "string", 
+          "description": "displayName is the display name of the Quick Start."
+        }, 
+        "description": {
+          "minLength": 1, 
+          "type": "string", 
+          "description": "description is the description of the Quick Start. (includes markdown)", 
+          "maxLength": 256
+        }, 
+        "tags": {
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "tags is a list of strings that describe the Quick Start."
+        }, 
+        "introduction": {
+          "minLength": 1, 
+          "type": "string", 
+          "description": "introduction describes the purpose of the Quick Start. (includes markdown)"
+        }, 
+        "prerequisites": {
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "prerequisites contains all prerequisites that need to be met before taking a Quick Start. (includes markdown)"
+        }, 
+        "nextQuickStart": {
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "nextQuickStart is a list of the following Quick Starts, suggested for the user to try."
+        }, 
+        "accessReviewResources": {
+          "items": {
+            "type": "object", 
+            "description": "ResourceAttributes includes the authorization attributes available for resource requests to the Authorizer interface", 
+            "properties": {
+              "group": {
+                "type": "string", 
+                "description": "Group is the API Group of the Resource.  \"*\" means all."
+              }, 
+              "name": {
+                "type": "string", 
+                "description": "Name is the name of the resource being requested for a \"get\" or deleted for a \"delete\". \"\" (empty) means all."
+              }, 
+              "namespace": {
+                "type": "string", 
+                "description": "Namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces \"\" (empty) is defaulted for LocalSubjectAccessReviews \"\" (empty) is empty for cluster-scoped resources \"\" (empty) means \"all\" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview"
+              }, 
+              "verb": {
+                "type": "string", 
+                "description": "Verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  \"*\" means all."
+              }, 
+              "version": {
+                "type": "string", 
+                "description": "Version is the API Version of the Resource.  \"*\" means all."
+              }, 
+              "resource": {
+                "type": "string", 
+                "description": "Resource is one of the existing resource types.  \"*\" means all."
+              }, 
+              "subresource": {
+                "type": "string", 
+                "description": "Subresource is one of the existing resource types.  \"\" means none."
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "accessReviewResources contains a list of resources that the user's access will be reviewed against in order for the user to complete the Quick Start. The Quick Start will be hidden if any of the access reviews fail."
+        }, 
+        "durationMinutes": {
+          "minimum": 1, 
+          "type": "integer", 
+          "description": "durationMinutes describes approximately how many minutes it will take to complete the Quick Start."
+        }, 
+        "conclusion": {
+          "type": "string", 
+          "description": "conclusion sums up the Quick Start and suggests the possible next steps. (includes markdown)"
+        }, 
+        "icon": {
+          "type": "string", 
+          "description": "icon is a base64 encoded image that will be displayed beside the Quick Start display name. The icon should be an vector image for easy scaling. The size of the icon should be 40x40."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

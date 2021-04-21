@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "type", 
+    "status"
+  ], 
+  "type": "object", 
+  "description": "NamespaceCondition contains details about state of namespace.", 
+  "properties": {
+    "status": {
+      "type": "string", 
+      "description": "Status of the condition, one of True, False, Unknown."
+    }, 
+    "type": {
+      "type": "string", 
+      "description": "Type of namespace controller condition."
+    }, 
+    "message": {
+      "type": "string"
+    }, 
+    "lastTransitionTime": {
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+    }, 
+    "reason": {
+      "type": "string"
+    }
+  }
+}

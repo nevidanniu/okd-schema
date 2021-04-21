@@ -1,0 +1,174 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Gateway", 
+      "version": "v1alpha3", 
+      "group": "networking.istio.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "Configuration affecting edge load balancer. See more details at: https://istio.io/docs/reference/config/networking/gateway.html", 
+      "properties": {
+        "servers": {
+          "items": {
+            "type": "object", 
+            "properties": {
+              "tls": {
+                "type": "object", 
+                "description": "Set of TLS related options that govern the server's behavior.", 
+                "properties": {
+                  "cipherSuites": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array", 
+                    "description": "Optional: If specified, only support the specified cipher list."
+                  }, 
+                  "subjectAltNames": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array"
+                  }, 
+                  "maxProtocolVersion": {
+                    "enum": [
+                      "TLS_AUTO", 
+                      "TLSV1_0", 
+                      "TLSV1_1", 
+                      "TLSV1_2", 
+                      "TLSV1_3"
+                    ], 
+                    "type": "string", 
+                    "description": "Optional: Maximum TLS protocol version."
+                  }, 
+                  "httpsRedirect": {
+                    "type": "boolean"
+                  }, 
+                  "privateKey": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`.", 
+                    "format": "string"
+                  }, 
+                  "verifyCertificateHash": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array"
+                  }, 
+                  "credentialName": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "caCertificates": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `MUTUAL`.", 
+                    "format": "string"
+                  }, 
+                  "mode": {
+                    "enum": [
+                      "PASSTHROUGH", 
+                      "SIMPLE", 
+                      "MUTUAL", 
+                      "AUTO_PASSTHROUGH", 
+                      "ISTIO_MUTUAL"
+                    ], 
+                    "type": "string"
+                  }, 
+                  "verifyCertificateSpki": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array"
+                  }, 
+                  "minProtocolVersion": {
+                    "enum": [
+                      "TLS_AUTO", 
+                      "TLSV1_0", 
+                      "TLSV1_1", 
+                      "TLSV1_2", 
+                      "TLSV1_3"
+                    ], 
+                    "type": "string", 
+                    "description": "Optional: Minimum TLS protocol version."
+                  }, 
+                  "serverCertificate": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`.", 
+                    "format": "string"
+                  }
+                }
+              }, 
+              "bind": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "defaultEndpoint": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "hosts": {
+                "items": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "type": "array", 
+                "description": "One or more hosts exposed by this gateway."
+              }, 
+              "port": {
+                "type": "object", 
+                "properties": {
+                  "protocol": {
+                    "type": "string", 
+                    "description": "The protocol exposed on the port.", 
+                    "format": "string"
+                  }, 
+                  "name": {
+                    "type": "string", 
+                    "description": "Label assigned to the port.", 
+                    "format": "string"
+                  }, 
+                  "number": {
+                    "type": "integer", 
+                    "description": "A valid non-negative integer port number."
+                  }
+                }
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "A list of server specifications."
+        }, 
+        "selector": {
+          "additionalProperties": {
+            "type": "string", 
+            "format": "string"
+          }, 
+          "type": "object"
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

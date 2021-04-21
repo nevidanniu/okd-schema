@@ -1,0 +1,11 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ServiceMeshPolicy", 
+      "version": "v1", 
+      "group": "authentication.maistra.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object"
+}

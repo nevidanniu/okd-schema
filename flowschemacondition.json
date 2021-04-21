@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "FlowSchemaCondition describes conditions for a FlowSchema.", 
+  "properties": {
+    "status": {
+      "type": "string", 
+      "description": "`status` is the status of the condition. Can be True, False, Unknown. Required."
+    }, 
+    "type": {
+      "type": "string", 
+      "description": "`type` is the type of the condition. Required."
+    }, 
+    "message": {
+      "type": "string", 
+      "description": "`message` is a human-readable message indicating details about last transition."
+    }, 
+    "lastTransitionTime": {
+      "description": "`lastTransitionTime` is the last time the condition transitioned from one status to another.", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+    }, 
+    "reason": {
+      "type": "string", 
+      "description": "`reason` is a unique, one-word, CamelCase reason for the condition's last transition."
+    }
+  }
+}

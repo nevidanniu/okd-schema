@@ -1,0 +1,151 @@
+{
+  "description": "ServiceCA provides information to configure an operator to manage the service cert controllers", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ServiceCA", 
+      "version": "v1", 
+      "group": "operator.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "status holds observed values from the cluster. They may not be overridden.", 
+      "properties": {
+        "observedGeneration": {
+          "type": "integer", 
+          "description": "observedGeneration is the last generation change you've dealt with", 
+          "format": "int64"
+        }, 
+        "readyReplicas": {
+          "type": "integer", 
+          "description": "readyReplicas indicates how many replicas are ready and at the desired state", 
+          "format": "int32"
+        }, 
+        "conditions": {
+          "items": {
+            "type": "object", 
+            "description": "OperatorCondition is just the standard condition fields.", 
+            "properties": {
+              "status": {
+                "type": "string"
+              }, 
+              "type": {
+                "type": "string"
+              }, 
+              "message": {
+                "type": "string"
+              }, 
+              "lastTransitionTime": {
+                "type": "string", 
+                "format": "date-time"
+              }, 
+              "reason": {
+                "type": "string"
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "conditions is a list of conditions and their status"
+        }, 
+        "version": {
+          "type": "string", 
+          "description": "version is the level this availability applies to"
+        }, 
+        "generations": {
+          "items": {
+            "type": "object", 
+            "description": "GenerationStatus keeps track of the generation for a given resource so that decisions about forced updates can be made.", 
+            "properties": {
+              "resource": {
+                "type": "string", 
+                "description": "resource is the resource type of the thing you're tracking"
+              }, 
+              "name": {
+                "type": "string", 
+                "description": "name is the name of the thing you're tracking"
+              }, 
+              "namespace": {
+                "type": "string", 
+                "description": "namespace is where the thing you're tracking is"
+              }, 
+              "lastGeneration": {
+                "type": "integer", 
+                "description": "lastGeneration is the last generation of the workload controller involved", 
+                "format": "int64"
+              }, 
+              "group": {
+                "type": "string", 
+                "description": "group is the group of the thing you're tracking"
+              }, 
+              "hash": {
+                "type": "string", 
+                "description": "hash is an optional field set for resources without generation that are content sensitive like secrets and configmaps"
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "generations are used to determine when an item needs to be reconciled or has changed in a way that needs a reaction."
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "spec holds user settable values for configuration", 
+      "properties": {
+        "logLevel": {
+          "enum": [
+            "", 
+            "Normal", 
+            "Debug", 
+            "Trace", 
+            "TraceAll"
+          ], 
+          "type": "string", 
+          "description": "logLevel is an intent based logging for an overall component.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for their operands. \n Valid values are: \"Normal\", \"Debug\", \"Trace\", \"TraceAll\". Defaults to \"Normal\"."
+        }, 
+        "operatorLogLevel": {
+          "enum": [
+            "", 
+            "Normal", 
+            "Debug", 
+            "Trace", 
+            "TraceAll"
+          ], 
+          "type": "string", 
+          "description": "operatorLogLevel is an intent based logging for the operator itself.  It does not give fine grained control, but it is a simple way to manage coarse grained logging choices that operators have to interpret for themselves. \n Valid values are: \"Normal\", \"Debug\", \"Trace\", \"TraceAll\". Defaults to \"Normal\"."
+        }, 
+        "managementState": {
+          "pattern": "^(Managed|Unmanaged|Force|Removed)$", 
+          "type": "string", 
+          "description": "managementState indicates whether and how the operator should manage the component"
+        }, 
+        "observedConfig": {
+          "description": "observedConfig holds a sparse config that controller has observed from the cluster state.  It exists in spec because it is an input to the level for the operator", 
+          "x-kubernetes-preserve-unknown-fields": true
+        }, 
+        "unsupportedConfigOverrides": {
+          "description": "unsupportedConfigOverrides holds a sparse config that will override any previously set options.  It only needs to be the fields to override it will end up overlaying in the following order: 1. hardcoded defaults 2. observedConfig 3. unsupportedConfigOverrides", 
+          "x-kubernetes-preserve-unknown-fields": true
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

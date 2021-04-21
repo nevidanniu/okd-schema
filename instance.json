@@ -1,0 +1,11 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "instance", 
+      "version": "v1alpha2", 
+      "group": "config.istio.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object"
+}

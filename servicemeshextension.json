@@ -1,0 +1,88 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ServiceMeshExtension", 
+      "version": "v1alpha1", 
+      "group": "maistra.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "properties": {
+        "observedGeneration": {
+          "type": "integer", 
+          "format": "int64"
+        }, 
+        "phase": {
+          "type": "string"
+        }, 
+        "priority": {
+          "type": "integer"
+        }, 
+        "deployment": {
+          "type": "object", 
+          "properties": {
+            "ready": {
+              "type": "boolean"
+            }, 
+            "url": {
+              "type": "string"
+            }, 
+            "sha256": {
+              "type": "string"
+            }, 
+            "containerSha256": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "properties": {
+        "phase": {
+          "type": "string"
+        }, 
+        "priority": {
+          "type": "integer"
+        }, 
+        "image": {
+          "type": "string"
+        }, 
+        "config": {
+          "type": "string"
+        }, 
+        "workloadSelector": {
+          "required": [
+            "labels"
+          ], 
+          "type": "object", 
+          "properties": {
+            "labels": {
+              "additionalProperties": {
+                "type": "string"
+              }, 
+              "type": "object"
+            }
+          }
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

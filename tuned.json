@@ -1,0 +1,147 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Tuned", 
+      "version": "v1", 
+      "group": "tuned.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "Tuned is a collection of rules that allows cluster-wide deployment of node-level sysctls and more flexibility to add custom tuning specified by user needs.  These rules are translated and passed to all containerized Tuned daemons running in the cluster in the format that the daemons understand. The responsibility for applying the node-level tuning then lies with the containerized Tuned daemons. More info: https://github.com/openshift/cluster-node-tuning-operator", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "TunedStatus is the status for a Tuned resource"
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "profile", 
+        "recommend"
+      ], 
+      "type": "object", 
+      "description": "spec is the specification of the desired behavior of Tuned. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status", 
+      "properties": {
+        "profile": {
+          "items": {
+            "required": [
+              "data", 
+              "name"
+            ], 
+            "type": "object", 
+            "description": "A Tuned profile.", 
+            "properties": {
+              "data": {
+                "type": "string", 
+                "description": "Specification of the Tuned profile to be consumed by the Tuned daemon."
+              }, 
+              "name": {
+                "type": "string", 
+                "description": "Name of the Tuned profile to be used in the recommend section."
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "Tuned profiles."
+        }, 
+        "managementState": {
+          "pattern": "^(Managed|Unmanaged|Force|Removed)$", 
+          "type": "string", 
+          "description": "managementState indicates whether the registry instance represented by this config instance is under operator management or not.  Valid values are Force, Managed, Unmanaged, and Removed."
+        }, 
+        "recommend": {
+          "items": {
+            "required": [
+              "priority", 
+              "profile"
+            ], 
+            "type": "object", 
+            "description": "Selection logic for a single Tuned profile.", 
+            "properties": {
+              "operand": {
+                "required": [
+                  "debug"
+                ], 
+                "type": "object", 
+                "description": "Optional operand configuration.", 
+                "properties": {
+                  "debug": {
+                    "type": "boolean", 
+                    "description": "turn debugging on/off for the Tuned daemon: true/false (default is false)"
+                  }
+                }
+              }, 
+              "priority": {
+                "minimum": 0, 
+                "type": "integer", 
+                "description": "Tuned profile priority. Highest priority is 0.", 
+                "format": "int64"
+              }, 
+              "profile": {
+                "type": "string", 
+                "description": "Name of the Tuned profile to recommend."
+              }, 
+              "match": {
+                "items": {
+                  "required": [
+                    "label"
+                  ], 
+                  "type": "object", 
+                  "description": "Rules governing application of a Tuned profile.", 
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "node", 
+                        "pod"
+                      ], 
+                      "type": "string", 
+                      "description": "Match type: [node/pod]. If omitted, \"node\" is assumed."
+                    }, 
+                    "value": {
+                      "type": "string", 
+                      "description": "Node or Pod label value. If omitted, the presence of label name is enough to match."
+                    }, 
+                    "match": {
+                      "items": {
+                        "x-kubernetes-preserve-unknown-fields": true
+                      }, 
+                      "type": "array", 
+                      "description": "Additional rules governing application of the tuned profile connected by logical AND operator."
+                    }, 
+                    "label": {
+                      "type": "string", 
+                      "description": "Node or Pod label name."
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "Rules governing application of a Tuned profile connected by logical OR operator."
+              }, 
+              "machineConfigLabels": {
+                "additionalProperties": {
+                  "type": "string"
+                }, 
+                "type": "object", 
+                "description": "MachineConfigLabels specifies the labels for a MachineConfig. The MachineConfig is created automatically to apply additional host settings (e.g. kernel boot parameters) profile 'Profile' needs and can only be applied by creating a MachineConfig. This involves finding all MachineConfigPools with machineConfigSelector matching the MachineConfigLabels and setting the profile 'Profile' on all nodes that match the MachineConfigPools' nodeSelectors."
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "Selection logic for all Tuned profiles."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

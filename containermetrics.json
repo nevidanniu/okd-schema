@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "name", 
+    "usage"
+  ], 
+  "type": "object", 
+  "description": "ContainerMetrics sets resource usage metrics of a container.", 
+  "properties": {
+    "usage": {
+      "additionalProperties": {
+        "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+      }, 
+      "type": "object", 
+      "description": "The memory usage is the memory working set."
+    }, 
+    "name": {
+      "type": "string", 
+      "description": "Container name corresponding to the one from pod.spec.containers."
+    }
+  }
+}

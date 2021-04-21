@@ -1,0 +1,1124 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "DestinationRule", 
+      "version": "v1beta1", 
+      "group": "networking.istio.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "Configuration affecting load balancing, outlier detection, etc. See more details at: https://istio.io/docs/reference/config/networking/destination-rule.html", 
+      "properties": {
+        "exportTo": {
+          "items": {
+            "type": "string", 
+            "format": "string"
+          }, 
+          "type": "array", 
+          "description": "A list of namespaces to which this destination rule is exported."
+        }, 
+        "host": {
+          "type": "string", 
+          "description": "The name of a service from the service registry.", 
+          "format": "string"
+        }, 
+        "trafficPolicy": {
+          "type": "object", 
+          "properties": {
+            "tls": {
+              "type": "object", 
+              "description": "TLS related settings for connections to the upstream service.", 
+              "properties": {
+                "subjectAltNames": {
+                  "items": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "type": "array"
+                }, 
+                "clientCertificate": {
+                  "type": "string", 
+                  "description": "REQUIRED if mode is `MUTUAL`.", 
+                  "format": "string"
+                }, 
+                "privateKey": {
+                  "type": "string", 
+                  "description": "REQUIRED if mode is `MUTUAL`.", 
+                  "format": "string"
+                }, 
+                "sni": {
+                  "type": "string", 
+                  "description": "SNI string to present to the server during TLS handshake.", 
+                  "format": "string"
+                }, 
+                "caCertificates": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "mode": {
+                  "enum": [
+                    "DISABLE", 
+                    "SIMPLE", 
+                    "MUTUAL", 
+                    "ISTIO_MUTUAL"
+                  ], 
+                  "type": "string"
+                }
+              }
+            }, 
+            "outlierDetection": {
+              "type": "object", 
+              "properties": {
+                "consecutive5xxErrors": {
+                  "type": "integer", 
+                  "description": "Number of 5xx errors before a host is ejected from the connection pool."
+                }, 
+                "interval": {
+                  "type": "string", 
+                  "description": "Time interval between ejection sweep analysis."
+                }, 
+                "consecutiveGatewayErrors": {
+                  "type": "integer", 
+                  "description": "Number of gateway errors before a host is ejected from the connection pool."
+                }, 
+                "baseEjectionTime": {
+                  "type": "string", 
+                  "description": "Minimum ejection duration."
+                }, 
+                "consecutiveErrors": {
+                  "type": "integer", 
+                  "format": "int32"
+                }, 
+                "minHealthPercent": {
+                  "type": "integer", 
+                  "format": "int32"
+                }, 
+                "maxEjectionPercent": {
+                  "type": "integer", 
+                  "format": "int32"
+                }
+              }
+            }, 
+            "portLevelSettings": {
+              "items": {
+                "type": "object", 
+                "properties": {
+                  "tls": {
+                    "type": "object", 
+                    "description": "TLS related settings for connections to the upstream service.", 
+                    "properties": {
+                      "subjectAltNames": {
+                        "items": {
+                          "type": "string", 
+                          "format": "string"
+                        }, 
+                        "type": "array"
+                      }, 
+                      "clientCertificate": {
+                        "type": "string", 
+                        "description": "REQUIRED if mode is `MUTUAL`.", 
+                        "format": "string"
+                      }, 
+                      "privateKey": {
+                        "type": "string", 
+                        "description": "REQUIRED if mode is `MUTUAL`.", 
+                        "format": "string"
+                      }, 
+                      "sni": {
+                        "type": "string", 
+                        "description": "SNI string to present to the server during TLS handshake.", 
+                        "format": "string"
+                      }, 
+                      "caCertificates": {
+                        "type": "string", 
+                        "format": "string"
+                      }, 
+                      "mode": {
+                        "enum": [
+                          "DISABLE", 
+                          "SIMPLE", 
+                          "MUTUAL", 
+                          "ISTIO_MUTUAL"
+                        ], 
+                        "type": "string"
+                      }
+                    }
+                  }, 
+                  "outlierDetection": {
+                    "type": "object", 
+                    "properties": {
+                      "consecutive5xxErrors": {
+                        "type": "integer", 
+                        "description": "Number of 5xx errors before a host is ejected from the connection pool."
+                      }, 
+                      "interval": {
+                        "type": "string", 
+                        "description": "Time interval between ejection sweep analysis."
+                      }, 
+                      "consecutiveGatewayErrors": {
+                        "type": "integer", 
+                        "description": "Number of gateway errors before a host is ejected from the connection pool."
+                      }, 
+                      "baseEjectionTime": {
+                        "type": "string", 
+                        "description": "Minimum ejection duration."
+                      }, 
+                      "consecutiveErrors": {
+                        "type": "integer", 
+                        "format": "int32"
+                      }, 
+                      "minHealthPercent": {
+                        "type": "integer", 
+                        "format": "int32"
+                      }, 
+                      "maxEjectionPercent": {
+                        "type": "integer", 
+                        "format": "int32"
+                      }
+                    }
+                  }, 
+                  "connectionPool": {
+                    "type": "object", 
+                    "properties": {
+                      "http": {
+                        "type": "object", 
+                        "description": "HTTP connection pool settings.", 
+                        "properties": {
+                          "http1MaxPendingRequests": {
+                            "type": "integer", 
+                            "description": "Maximum number of pending HTTP requests to a destination.", 
+                            "format": "int32"
+                          }, 
+                          "http2MaxRequests": {
+                            "type": "integer", 
+                            "description": "Maximum number of requests to a backend.", 
+                            "format": "int32"
+                          }, 
+                          "idleTimeout": {
+                            "type": "string", 
+                            "description": "The idle timeout for upstream connection pool connections."
+                          }, 
+                          "maxRetries": {
+                            "type": "integer", 
+                            "format": "int32"
+                          }, 
+                          "maxRequestsPerConnection": {
+                            "type": "integer", 
+                            "description": "Maximum number of requests per connection to a backend.", 
+                            "format": "int32"
+                          }, 
+                          "h2UpgradePolicy": {
+                            "enum": [
+                              "DEFAULT", 
+                              "DO_NOT_UPGRADE", 
+                              "UPGRADE"
+                            ], 
+                            "type": "string", 
+                            "description": "Specify if http1.1 connection should be upgraded to http2 for the associated destination."
+                          }
+                        }
+                      }, 
+                      "tcp": {
+                        "type": "object", 
+                        "description": "Settings common to both HTTP and TCP upstream connections.", 
+                        "properties": {
+                          "tcpKeepalive": {
+                            "type": "object", 
+                            "description": "If set then set SO_KEEPALIVE on the socket to enable TCP Keepalives.", 
+                            "properties": {
+                              "interval": {
+                                "type": "string", 
+                                "description": "The time duration between keep-alive probes."
+                              }, 
+                              "time": {
+                                "type": "string"
+                              }, 
+                              "probes": {
+                                "type": "integer"
+                              }
+                            }
+                          }, 
+                          "connectTimeout": {
+                            "type": "string", 
+                            "description": "TCP connection timeout."
+                          }, 
+                          "maxConnections": {
+                            "type": "integer", 
+                            "description": "Maximum number of HTTP1 /TCP connections to a destination host.", 
+                            "format": "int32"
+                          }
+                        }
+                      }
+                    }
+                  }, 
+                  "port": {
+                    "type": "object", 
+                    "properties": {
+                      "number": {
+                        "type": "integer"
+                      }
+                    }
+                  }, 
+                  "loadBalancer": {
+                    "type": "object", 
+                    "description": "Settings controlling the load balancer algorithms.", 
+                    "properties": {
+                      "simple": {
+                        "enum": [
+                          "ROUND_ROBIN", 
+                          "LEAST_CONN", 
+                          "RANDOM", 
+                          "PASSTHROUGH"
+                        ], 
+                        "type": "string"
+                      }, 
+                      "localityLbSetting": {
+                        "type": "object", 
+                        "properties": {
+                          "failover": {
+                            "items": {
+                              "type": "object", 
+                              "properties": {
+                                "to": {
+                                  "type": "string", 
+                                  "format": "string"
+                                }, 
+                                "from": {
+                                  "type": "string", 
+                                  "description": "Originating region.", 
+                                  "format": "string"
+                                }
+                              }
+                            }, 
+                            "type": "array", 
+                            "description": "Optional: only failover or distribute can be set."
+                          }, 
+                          "distribute": {
+                            "items": {
+                              "type": "object", 
+                              "properties": {
+                                "to": {
+                                  "additionalProperties": {
+                                    "type": "integer"
+                                  }, 
+                                  "type": "object", 
+                                  "description": "Map of upstream localities to traffic distribution weights."
+                                }, 
+                                "from": {
+                                  "type": "string", 
+                                  "description": "Originating locality, '/' separated, e.g.", 
+                                  "format": "string"
+                                }
+                              }
+                            }, 
+                            "type": "array", 
+                            "description": "Optional: only one of distribute or failover can be set."
+                          }, 
+                          "enabled": {
+                            "type": "boolean", 
+                            "description": "enable locality load balancing, this is DestinationRule-level and will override mesh wide settings in entirety."
+                          }
+                        }
+                      }, 
+                      "consistentHash": {
+                        "type": "object", 
+                        "properties": {
+                          "httpCookie": {
+                            "type": "object", 
+                            "description": "Hash based on HTTP cookie.", 
+                            "properties": {
+                              "path": {
+                                "type": "string", 
+                                "description": "Path to set for the cookie.", 
+                                "format": "string"
+                              }, 
+                              "name": {
+                                "type": "string", 
+                                "description": "Name of the cookie.", 
+                                "format": "string"
+                              }, 
+                              "ttl": {
+                                "type": "string", 
+                                "description": "Lifetime of the cookie."
+                              }
+                            }
+                          }, 
+                          "minimumRingSize": {
+                            "type": "integer"
+                          }, 
+                          "httpHeaderName": {
+                            "type": "string", 
+                            "description": "Hash based on a specific HTTP header.", 
+                            "format": "string"
+                          }, 
+                          "useSourceIp": {
+                            "type": "boolean", 
+                            "description": "Hash based on the source IP address."
+                          }, 
+                          "httpQueryParameterName": {
+                            "type": "string", 
+                            "description": "Hash based on a specific HTTP query parameter.", 
+                            "format": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }, 
+              "type": "array", 
+              "description": "Traffic policies specific to individual ports."
+            }, 
+            "connectionPool": {
+              "type": "object", 
+              "properties": {
+                "http": {
+                  "type": "object", 
+                  "description": "HTTP connection pool settings.", 
+                  "properties": {
+                    "http1MaxPendingRequests": {
+                      "type": "integer", 
+                      "description": "Maximum number of pending HTTP requests to a destination.", 
+                      "format": "int32"
+                    }, 
+                    "http2MaxRequests": {
+                      "type": "integer", 
+                      "description": "Maximum number of requests to a backend.", 
+                      "format": "int32"
+                    }, 
+                    "idleTimeout": {
+                      "type": "string", 
+                      "description": "The idle timeout for upstream connection pool connections."
+                    }, 
+                    "maxRetries": {
+                      "type": "integer", 
+                      "format": "int32"
+                    }, 
+                    "maxRequestsPerConnection": {
+                      "type": "integer", 
+                      "description": "Maximum number of requests per connection to a backend.", 
+                      "format": "int32"
+                    }, 
+                    "h2UpgradePolicy": {
+                      "enum": [
+                        "DEFAULT", 
+                        "DO_NOT_UPGRADE", 
+                        "UPGRADE"
+                      ], 
+                      "type": "string", 
+                      "description": "Specify if http1.1 connection should be upgraded to http2 for the associated destination."
+                    }
+                  }
+                }, 
+                "tcp": {
+                  "type": "object", 
+                  "description": "Settings common to both HTTP and TCP upstream connections.", 
+                  "properties": {
+                    "tcpKeepalive": {
+                      "type": "object", 
+                      "description": "If set then set SO_KEEPALIVE on the socket to enable TCP Keepalives.", 
+                      "properties": {
+                        "interval": {
+                          "type": "string", 
+                          "description": "The time duration between keep-alive probes."
+                        }, 
+                        "time": {
+                          "type": "string"
+                        }, 
+                        "probes": {
+                          "type": "integer"
+                        }
+                      }
+                    }, 
+                    "connectTimeout": {
+                      "type": "string", 
+                      "description": "TCP connection timeout."
+                    }, 
+                    "maxConnections": {
+                      "type": "integer", 
+                      "description": "Maximum number of HTTP1 /TCP connections to a destination host.", 
+                      "format": "int32"
+                    }
+                  }
+                }
+              }
+            }, 
+            "loadBalancer": {
+              "type": "object", 
+              "description": "Settings controlling the load balancer algorithms.", 
+              "properties": {
+                "simple": {
+                  "enum": [
+                    "ROUND_ROBIN", 
+                    "LEAST_CONN", 
+                    "RANDOM", 
+                    "PASSTHROUGH"
+                  ], 
+                  "type": "string"
+                }, 
+                "localityLbSetting": {
+                  "type": "object", 
+                  "properties": {
+                    "failover": {
+                      "items": {
+                        "type": "object", 
+                        "properties": {
+                          "to": {
+                            "type": "string", 
+                            "format": "string"
+                          }, 
+                          "from": {
+                            "type": "string", 
+                            "description": "Originating region.", 
+                            "format": "string"
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "Optional: only failover or distribute can be set."
+                    }, 
+                    "distribute": {
+                      "items": {
+                        "type": "object", 
+                        "properties": {
+                          "to": {
+                            "additionalProperties": {
+                              "type": "integer"
+                            }, 
+                            "type": "object", 
+                            "description": "Map of upstream localities to traffic distribution weights."
+                          }, 
+                          "from": {
+                            "type": "string", 
+                            "description": "Originating locality, '/' separated, e.g.", 
+                            "format": "string"
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "Optional: only one of distribute or failover can be set."
+                    }, 
+                    "enabled": {
+                      "type": "boolean", 
+                      "description": "enable locality load balancing, this is DestinationRule-level and will override mesh wide settings in entirety."
+                    }
+                  }
+                }, 
+                "consistentHash": {
+                  "type": "object", 
+                  "properties": {
+                    "httpCookie": {
+                      "type": "object", 
+                      "description": "Hash based on HTTP cookie.", 
+                      "properties": {
+                        "path": {
+                          "type": "string", 
+                          "description": "Path to set for the cookie.", 
+                          "format": "string"
+                        }, 
+                        "name": {
+                          "type": "string", 
+                          "description": "Name of the cookie.", 
+                          "format": "string"
+                        }, 
+                        "ttl": {
+                          "type": "string", 
+                          "description": "Lifetime of the cookie."
+                        }
+                      }
+                    }, 
+                    "minimumRingSize": {
+                      "type": "integer"
+                    }, 
+                    "httpHeaderName": {
+                      "type": "string", 
+                      "description": "Hash based on a specific HTTP header.", 
+                      "format": "string"
+                    }, 
+                    "useSourceIp": {
+                      "type": "boolean", 
+                      "description": "Hash based on the source IP address."
+                    }, 
+                    "httpQueryParameterName": {
+                      "type": "string", 
+                      "description": "Hash based on a specific HTTP query parameter.", 
+                      "format": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }, 
+        "subsets": {
+          "items": {
+            "type": "object", 
+            "properties": {
+              "labels": {
+                "additionalProperties": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "type": "object"
+              }, 
+              "trafficPolicy": {
+                "type": "object", 
+                "description": "Traffic policies that apply to this subset.", 
+                "properties": {
+                  "tls": {
+                    "type": "object", 
+                    "description": "TLS related settings for connections to the upstream service.", 
+                    "properties": {
+                      "subjectAltNames": {
+                        "items": {
+                          "type": "string", 
+                          "format": "string"
+                        }, 
+                        "type": "array"
+                      }, 
+                      "clientCertificate": {
+                        "type": "string", 
+                        "description": "REQUIRED if mode is `MUTUAL`.", 
+                        "format": "string"
+                      }, 
+                      "privateKey": {
+                        "type": "string", 
+                        "description": "REQUIRED if mode is `MUTUAL`.", 
+                        "format": "string"
+                      }, 
+                      "sni": {
+                        "type": "string", 
+                        "description": "SNI string to present to the server during TLS handshake.", 
+                        "format": "string"
+                      }, 
+                      "caCertificates": {
+                        "type": "string", 
+                        "format": "string"
+                      }, 
+                      "mode": {
+                        "enum": [
+                          "DISABLE", 
+                          "SIMPLE", 
+                          "MUTUAL", 
+                          "ISTIO_MUTUAL"
+                        ], 
+                        "type": "string"
+                      }
+                    }
+                  }, 
+                  "outlierDetection": {
+                    "type": "object", 
+                    "properties": {
+                      "consecutive5xxErrors": {
+                        "type": "integer", 
+                        "description": "Number of 5xx errors before a host is ejected from the connection pool."
+                      }, 
+                      "interval": {
+                        "type": "string", 
+                        "description": "Time interval between ejection sweep analysis."
+                      }, 
+                      "consecutiveGatewayErrors": {
+                        "type": "integer", 
+                        "description": "Number of gateway errors before a host is ejected from the connection pool."
+                      }, 
+                      "baseEjectionTime": {
+                        "type": "string", 
+                        "description": "Minimum ejection duration."
+                      }, 
+                      "consecutiveErrors": {
+                        "type": "integer", 
+                        "format": "int32"
+                      }, 
+                      "minHealthPercent": {
+                        "type": "integer", 
+                        "format": "int32"
+                      }, 
+                      "maxEjectionPercent": {
+                        "type": "integer", 
+                        "format": "int32"
+                      }
+                    }
+                  }, 
+                  "portLevelSettings": {
+                    "items": {
+                      "type": "object", 
+                      "properties": {
+                        "tls": {
+                          "type": "object", 
+                          "description": "TLS related settings for connections to the upstream service.", 
+                          "properties": {
+                            "subjectAltNames": {
+                              "items": {
+                                "type": "string", 
+                                "format": "string"
+                              }, 
+                              "type": "array"
+                            }, 
+                            "clientCertificate": {
+                              "type": "string", 
+                              "description": "REQUIRED if mode is `MUTUAL`.", 
+                              "format": "string"
+                            }, 
+                            "privateKey": {
+                              "type": "string", 
+                              "description": "REQUIRED if mode is `MUTUAL`.", 
+                              "format": "string"
+                            }, 
+                            "sni": {
+                              "type": "string", 
+                              "description": "SNI string to present to the server during TLS handshake.", 
+                              "format": "string"
+                            }, 
+                            "caCertificates": {
+                              "type": "string", 
+                              "format": "string"
+                            }, 
+                            "mode": {
+                              "enum": [
+                                "DISABLE", 
+                                "SIMPLE", 
+                                "MUTUAL", 
+                                "ISTIO_MUTUAL"
+                              ], 
+                              "type": "string"
+                            }
+                          }
+                        }, 
+                        "outlierDetection": {
+                          "type": "object", 
+                          "properties": {
+                            "consecutive5xxErrors": {
+                              "type": "integer", 
+                              "description": "Number of 5xx errors before a host is ejected from the connection pool."
+                            }, 
+                            "interval": {
+                              "type": "string", 
+                              "description": "Time interval between ejection sweep analysis."
+                            }, 
+                            "consecutiveGatewayErrors": {
+                              "type": "integer", 
+                              "description": "Number of gateway errors before a host is ejected from the connection pool."
+                            }, 
+                            "baseEjectionTime": {
+                              "type": "string", 
+                              "description": "Minimum ejection duration."
+                            }, 
+                            "consecutiveErrors": {
+                              "type": "integer", 
+                              "format": "int32"
+                            }, 
+                            "minHealthPercent": {
+                              "type": "integer", 
+                              "format": "int32"
+                            }, 
+                            "maxEjectionPercent": {
+                              "type": "integer", 
+                              "format": "int32"
+                            }
+                          }
+                        }, 
+                        "connectionPool": {
+                          "type": "object", 
+                          "properties": {
+                            "http": {
+                              "type": "object", 
+                              "description": "HTTP connection pool settings.", 
+                              "properties": {
+                                "http1MaxPendingRequests": {
+                                  "type": "integer", 
+                                  "description": "Maximum number of pending HTTP requests to a destination.", 
+                                  "format": "int32"
+                                }, 
+                                "http2MaxRequests": {
+                                  "type": "integer", 
+                                  "description": "Maximum number of requests to a backend.", 
+                                  "format": "int32"
+                                }, 
+                                "idleTimeout": {
+                                  "type": "string", 
+                                  "description": "The idle timeout for upstream connection pool connections."
+                                }, 
+                                "maxRetries": {
+                                  "type": "integer", 
+                                  "format": "int32"
+                                }, 
+                                "maxRequestsPerConnection": {
+                                  "type": "integer", 
+                                  "description": "Maximum number of requests per connection to a backend.", 
+                                  "format": "int32"
+                                }, 
+                                "h2UpgradePolicy": {
+                                  "enum": [
+                                    "DEFAULT", 
+                                    "DO_NOT_UPGRADE", 
+                                    "UPGRADE"
+                                  ], 
+                                  "type": "string", 
+                                  "description": "Specify if http1.1 connection should be upgraded to http2 for the associated destination."
+                                }
+                              }
+                            }, 
+                            "tcp": {
+                              "type": "object", 
+                              "description": "Settings common to both HTTP and TCP upstream connections.", 
+                              "properties": {
+                                "tcpKeepalive": {
+                                  "type": "object", 
+                                  "description": "If set then set SO_KEEPALIVE on the socket to enable TCP Keepalives.", 
+                                  "properties": {
+                                    "interval": {
+                                      "type": "string", 
+                                      "description": "The time duration between keep-alive probes."
+                                    }, 
+                                    "time": {
+                                      "type": "string"
+                                    }, 
+                                    "probes": {
+                                      "type": "integer"
+                                    }
+                                  }
+                                }, 
+                                "connectTimeout": {
+                                  "type": "string", 
+                                  "description": "TCP connection timeout."
+                                }, 
+                                "maxConnections": {
+                                  "type": "integer", 
+                                  "description": "Maximum number of HTTP1 /TCP connections to a destination host.", 
+                                  "format": "int32"
+                                }
+                              }
+                            }
+                          }
+                        }, 
+                        "port": {
+                          "type": "object", 
+                          "properties": {
+                            "number": {
+                              "type": "integer"
+                            }
+                          }
+                        }, 
+                        "loadBalancer": {
+                          "type": "object", 
+                          "description": "Settings controlling the load balancer algorithms.", 
+                          "properties": {
+                            "simple": {
+                              "enum": [
+                                "ROUND_ROBIN", 
+                                "LEAST_CONN", 
+                                "RANDOM", 
+                                "PASSTHROUGH"
+                              ], 
+                              "type": "string"
+                            }, 
+                            "localityLbSetting": {
+                              "type": "object", 
+                              "properties": {
+                                "failover": {
+                                  "items": {
+                                    "type": "object", 
+                                    "properties": {
+                                      "to": {
+                                        "type": "string", 
+                                        "format": "string"
+                                      }, 
+                                      "from": {
+                                        "type": "string", 
+                                        "description": "Originating region.", 
+                                        "format": "string"
+                                      }
+                                    }
+                                  }, 
+                                  "type": "array", 
+                                  "description": "Optional: only failover or distribute can be set."
+                                }, 
+                                "distribute": {
+                                  "items": {
+                                    "type": "object", 
+                                    "properties": {
+                                      "to": {
+                                        "additionalProperties": {
+                                          "type": "integer"
+                                        }, 
+                                        "type": "object", 
+                                        "description": "Map of upstream localities to traffic distribution weights."
+                                      }, 
+                                      "from": {
+                                        "type": "string", 
+                                        "description": "Originating locality, '/' separated, e.g.", 
+                                        "format": "string"
+                                      }
+                                    }
+                                  }, 
+                                  "type": "array", 
+                                  "description": "Optional: only one of distribute or failover can be set."
+                                }, 
+                                "enabled": {
+                                  "type": "boolean", 
+                                  "description": "enable locality load balancing, this is DestinationRule-level and will override mesh wide settings in entirety."
+                                }
+                              }
+                            }, 
+                            "consistentHash": {
+                              "type": "object", 
+                              "properties": {
+                                "httpCookie": {
+                                  "type": "object", 
+                                  "description": "Hash based on HTTP cookie.", 
+                                  "properties": {
+                                    "path": {
+                                      "type": "string", 
+                                      "description": "Path to set for the cookie.", 
+                                      "format": "string"
+                                    }, 
+                                    "name": {
+                                      "type": "string", 
+                                      "description": "Name of the cookie.", 
+                                      "format": "string"
+                                    }, 
+                                    "ttl": {
+                                      "type": "string", 
+                                      "description": "Lifetime of the cookie."
+                                    }
+                                  }
+                                }, 
+                                "minimumRingSize": {
+                                  "type": "integer"
+                                }, 
+                                "httpHeaderName": {
+                                  "type": "string", 
+                                  "description": "Hash based on a specific HTTP header.", 
+                                  "format": "string"
+                                }, 
+                                "useSourceIp": {
+                                  "type": "boolean", 
+                                  "description": "Hash based on the source IP address."
+                                }, 
+                                "httpQueryParameterName": {
+                                  "type": "string", 
+                                  "description": "Hash based on a specific HTTP query parameter.", 
+                                  "format": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }, 
+                    "type": "array", 
+                    "description": "Traffic policies specific to individual ports."
+                  }, 
+                  "connectionPool": {
+                    "type": "object", 
+                    "properties": {
+                      "http": {
+                        "type": "object", 
+                        "description": "HTTP connection pool settings.", 
+                        "properties": {
+                          "http1MaxPendingRequests": {
+                            "type": "integer", 
+                            "description": "Maximum number of pending HTTP requests to a destination.", 
+                            "format": "int32"
+                          }, 
+                          "http2MaxRequests": {
+                            "type": "integer", 
+                            "description": "Maximum number of requests to a backend.", 
+                            "format": "int32"
+                          }, 
+                          "idleTimeout": {
+                            "type": "string", 
+                            "description": "The idle timeout for upstream connection pool connections."
+                          }, 
+                          "maxRetries": {
+                            "type": "integer", 
+                            "format": "int32"
+                          }, 
+                          "maxRequestsPerConnection": {
+                            "type": "integer", 
+                            "description": "Maximum number of requests per connection to a backend.", 
+                            "format": "int32"
+                          }, 
+                          "h2UpgradePolicy": {
+                            "enum": [
+                              "DEFAULT", 
+                              "DO_NOT_UPGRADE", 
+                              "UPGRADE"
+                            ], 
+                            "type": "string", 
+                            "description": "Specify if http1.1 connection should be upgraded to http2 for the associated destination."
+                          }
+                        }
+                      }, 
+                      "tcp": {
+                        "type": "object", 
+                        "description": "Settings common to both HTTP and TCP upstream connections.", 
+                        "properties": {
+                          "tcpKeepalive": {
+                            "type": "object", 
+                            "description": "If set then set SO_KEEPALIVE on the socket to enable TCP Keepalives.", 
+                            "properties": {
+                              "interval": {
+                                "type": "string", 
+                                "description": "The time duration between keep-alive probes."
+                              }, 
+                              "time": {
+                                "type": "string"
+                              }, 
+                              "probes": {
+                                "type": "integer"
+                              }
+                            }
+                          }, 
+                          "connectTimeout": {
+                            "type": "string", 
+                            "description": "TCP connection timeout."
+                          }, 
+                          "maxConnections": {
+                            "type": "integer", 
+                            "description": "Maximum number of HTTP1 /TCP connections to a destination host.", 
+                            "format": "int32"
+                          }
+                        }
+                      }
+                    }
+                  }, 
+                  "loadBalancer": {
+                    "type": "object", 
+                    "description": "Settings controlling the load balancer algorithms.", 
+                    "properties": {
+                      "simple": {
+                        "enum": [
+                          "ROUND_ROBIN", 
+                          "LEAST_CONN", 
+                          "RANDOM", 
+                          "PASSTHROUGH"
+                        ], 
+                        "type": "string"
+                      }, 
+                      "localityLbSetting": {
+                        "type": "object", 
+                        "properties": {
+                          "failover": {
+                            "items": {
+                              "type": "object", 
+                              "properties": {
+                                "to": {
+                                  "type": "string", 
+                                  "format": "string"
+                                }, 
+                                "from": {
+                                  "type": "string", 
+                                  "description": "Originating region.", 
+                                  "format": "string"
+                                }
+                              }
+                            }, 
+                            "type": "array", 
+                            "description": "Optional: only failover or distribute can be set."
+                          }, 
+                          "distribute": {
+                            "items": {
+                              "type": "object", 
+                              "properties": {
+                                "to": {
+                                  "additionalProperties": {
+                                    "type": "integer"
+                                  }, 
+                                  "type": "object", 
+                                  "description": "Map of upstream localities to traffic distribution weights."
+                                }, 
+                                "from": {
+                                  "type": "string", 
+                                  "description": "Originating locality, '/' separated, e.g.", 
+                                  "format": "string"
+                                }
+                              }
+                            }, 
+                            "type": "array", 
+                            "description": "Optional: only one of distribute or failover can be set."
+                          }, 
+                          "enabled": {
+                            "type": "boolean", 
+                            "description": "enable locality load balancing, this is DestinationRule-level and will override mesh wide settings in entirety."
+                          }
+                        }
+                      }, 
+                      "consistentHash": {
+                        "type": "object", 
+                        "properties": {
+                          "httpCookie": {
+                            "type": "object", 
+                            "description": "Hash based on HTTP cookie.", 
+                            "properties": {
+                              "path": {
+                                "type": "string", 
+                                "description": "Path to set for the cookie.", 
+                                "format": "string"
+                              }, 
+                              "name": {
+                                "type": "string", 
+                                "description": "Name of the cookie.", 
+                                "format": "string"
+                              }, 
+                              "ttl": {
+                                "type": "string", 
+                                "description": "Lifetime of the cookie."
+                              }
+                            }
+                          }, 
+                          "minimumRingSize": {
+                            "type": "integer"
+                          }, 
+                          "httpHeaderName": {
+                            "type": "string", 
+                            "description": "Hash based on a specific HTTP header.", 
+                            "format": "string"
+                          }, 
+                          "useSourceIp": {
+                            "type": "boolean", 
+                            "description": "Hash based on the source IP address."
+                          }, 
+                          "httpQueryParameterName": {
+                            "type": "string", 
+                            "description": "Hash based on a specific HTTP query parameter.", 
+                            "format": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }, 
+              "name": {
+                "type": "string", 
+                "description": "Name of the subset.", 
+                "format": "string"
+              }
+            }
+          }, 
+          "type": "array"
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

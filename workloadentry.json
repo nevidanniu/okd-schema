@@ -1,0 +1,70 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "WorkloadEntry", 
+      "version": "v1alpha3", 
+      "group": "networking.istio.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "Configuration affecting VMs onboarded into the mesh. See more details at: https://istio.io/docs/reference/config/networking/workload-entry.html", 
+      "properties": {
+        "network": {
+          "type": "string", 
+          "format": "string"
+        }, 
+        "weight": {
+          "type": "integer", 
+          "description": "The load balancing weight associated with the endpoint."
+        }, 
+        "locality": {
+          "type": "string", 
+          "description": "The locality associated with the endpoint.", 
+          "format": "string"
+        }, 
+        "labels": {
+          "additionalProperties": {
+            "type": "string", 
+            "format": "string"
+          }, 
+          "type": "object", 
+          "description": "One or more labels associated with the endpoint."
+        }, 
+        "serviceAccount": {
+          "type": "string", 
+          "format": "string"
+        }, 
+        "address": {
+          "type": "string", 
+          "format": "string"
+        }, 
+        "ports": {
+          "additionalProperties": {
+            "type": "integer"
+          }, 
+          "type": "object", 
+          "description": "Set of ports associated with the endpoint."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

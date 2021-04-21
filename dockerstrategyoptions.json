@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "DockerStrategyOptions contains extra strategy options for container image builds", 
+  "properties": {
+    "noCache": {
+      "type": "boolean", 
+      "description": "noCache overrides the docker-strategy noCache option in the build config"
+    }, 
+    "buildArgs": {
+      "items": {
+        "$ref": "_definitions.json#/definitions/io.k8s.api.core.v1.EnvVar"
+      }, 
+      "type": "array", 
+      "description": "Args contains any build arguments that are to be passed to Docker.  See https://docs.docker.com/engine/reference/builder/#/arg for more details"
+    }
+  }
+}

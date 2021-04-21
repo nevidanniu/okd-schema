@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "timestamp", 
+    "window", 
+    "containers"
+  ], 
+  "type": "object", 
+  "description": "PodMetrics sets resource usage metrics of a pod.", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "timestamp": {
+      "description": "The following fields define time interval from which metrics were collected from the interval [Timestamp-Window, Timestamp].", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "window": {
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Duration"
+    }, 
+    "containers": {
+      "items": {
+        "$ref": "_definitions.json#/definitions/io.k8s.metrics.pkg.apis.metrics.v1beta1.ContainerMetrics"
+      }, 
+      "type": "array", 
+      "description": "Metrics for all containers are collected within the same time window."
+    }, 
+    "metadata": {
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+    }
+  }
+}

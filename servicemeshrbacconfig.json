@@ -1,0 +1,11 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ServiceMeshRbacConfig", 
+      "version": "v1", 
+      "group": "rbac.maistra.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object"
+}

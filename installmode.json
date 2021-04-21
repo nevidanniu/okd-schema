@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "type", 
+    "supported"
+  ], 
+  "type": "object", 
+  "description": "InstallMode associates an InstallModeType with a flag representing if the CSV supports it", 
+  "properties": {
+    "supported": {
+      "type": "boolean"
+    }, 
+    "type": {
+      "type": "string"
+    }
+  }
+}

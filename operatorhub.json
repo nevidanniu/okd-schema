@@ -1,0 +1,90 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "OperatorHub", 
+      "version": "v1", 
+      "group": "config.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "OperatorHub is the Schema for the operatorhubs API. It can be used to change the state of the default hub sources for OperatorHub on the cluster from enabled to disabled and vice versa.", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "OperatorHubStatus defines the observed state of OperatorHub. The current state of the default hub sources will always be reflected here.", 
+      "properties": {
+        "sources": {
+          "items": {
+            "type": "object", 
+            "description": "HubSourceStatus is used to reflect the current state of applying the configuration to a default source", 
+            "properties": {
+              "disabled": {
+                "type": "boolean", 
+                "description": "disabled is used to disable a default hub source on cluster"
+              }, 
+              "status": {
+                "type": "string", 
+                "description": "status indicates success or failure in applying the configuration"
+              }, 
+              "message": {
+                "type": "string", 
+                "description": "message provides more information regarding failures"
+              }, 
+              "name": {
+                "minLength": 1, 
+                "type": "string", 
+                "description": "name is the name of one of the default hub sources", 
+                "maxLength": 253
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "sources encapsulates the result of applying the configuration for each hub source"
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "OperatorHubSpec defines the desired state of OperatorHub", 
+      "properties": {
+        "sources": {
+          "items": {
+            "type": "object", 
+            "description": "HubSource is used to specify the hub source and its configuration", 
+            "properties": {
+              "disabled": {
+                "type": "boolean", 
+                "description": "disabled is used to disable a default hub source on cluster"
+              }, 
+              "name": {
+                "minLength": 1, 
+                "type": "string", 
+                "description": "name is the name of one of the default hub sources", 
+                "maxLength": 253
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "sources is the list of default hub sources and their configuration. If the list is empty, it implies that the default hub sources are enabled on the cluster unless disableAllDefaultSources is true. If disableAllDefaultSources is true and sources is not empty, the configuration present in sources will take precedence. The list of default hub sources and their current state will always be reflected in the status block."
+        }, 
+        "disableAllDefaultSources": {
+          "type": "boolean", 
+          "description": "disableAllDefaultSources allows you to disable all the default hub sources. If this is true, a specific entry in sources can be used to enable a default source. If this is false, a specific entry in sources can be used to disable or enable a default source."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

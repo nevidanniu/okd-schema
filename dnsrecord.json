@@ -1,0 +1,135 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "DNSRecord", 
+      "version": "v1", 
+      "group": "ingress.operator.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "DNSRecord is a DNS record managed in the zones defined by dns.config.openshift.io/cluster .spec.publicZone and .spec.privateZone. \n Cluster admin manipulation of this resource is not supported. This resource is only for internal communication of OpenShift operators.", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "status is the most recently observed status of the dnsRecord.", 
+      "properties": {
+        "observedGeneration": {
+          "type": "integer", 
+          "description": "observedGeneration is the most recently observed generation of the DNSRecord.  When the DNSRecord is updated, the controller updates the corresponding record in each managed zone.  If an update for a particular zone fails, that failure is recorded in the status condition for the zone so that the controller can determine that it needs to retry the update for that specific zone.", 
+          "format": "int64"
+        }, 
+        "zones": {
+          "items": {
+            "type": "object", 
+            "description": "DNSZoneStatus is the status of a record within a specific zone.", 
+            "properties": {
+              "dnsZone": {
+                "type": "object", 
+                "description": "dnsZone is the zone where the record is published.", 
+                "properties": {
+                  "id": {
+                    "type": "string", 
+                    "description": "id is the identifier that can be used to find the DNS hosted zone. \n on AWS zone can be fetched using `ID` as id in [1] on Azure zone can be fetched using `ID` as a pre-determined name in [2], on GCP zone can be fetched using `ID` as a pre-determined name in [3]. \n [1]: https://docs.aws.amazon.com/cli/latest/reference/route53/get-hosted-zone.html#options [2]: https://docs.microsoft.com/en-us/cli/azure/network/dns/zone?view=azure-cli-latest#az-network-dns-zone-show [3]: https://cloud.google.com/dns/docs/reference/v1/managedZones/get"
+                  }, 
+                  "tags": {
+                    "additionalProperties": {
+                      "type": "string"
+                    }, 
+                    "type": "object", 
+                    "description": "tags can be used to query the DNS hosted zone. \n on AWS, resourcegroupstaggingapi [1] can be used to fetch a zone using `Tags` as tag-filters, \n [1]: https://docs.aws.amazon.com/cli/latest/reference/resourcegroupstaggingapi/get-resources.html#options"
+                  }
+                }
+              }, 
+              "conditions": {
+                "items": {
+                  "required": [
+                    "status", 
+                    "type"
+                  ], 
+                  "type": "object", 
+                  "description": "DNSZoneCondition is just the standard condition fields.", 
+                  "properties": {
+                    "status": {
+                      "minLength": 1, 
+                      "type": "string"
+                    }, 
+                    "type": {
+                      "minLength": 1, 
+                      "type": "string"
+                    }, 
+                    "message": {
+                      "type": "string"
+                    }, 
+                    "lastTransitionTime": {
+                      "type": "string", 
+                      "format": "date-time"
+                    }, 
+                    "reason": {
+                      "type": "string"
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "conditions are any conditions associated with the record in the zone. \n If publishing the record fails, the \"Failed\" condition will be set with a reason and message describing the cause of the failure."
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "zones are the status of the record in each zone."
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "dnsName", 
+        "recordTTL", 
+        "recordType", 
+        "targets"
+      ], 
+      "type": "object", 
+      "description": "spec is the specification of the desired behavior of the dnsecord.", 
+      "properties": {
+        "recordTTL": {
+          "minimum": 0, 
+          "type": "integer", 
+          "description": "recordTTL is the record TTL in seconds. If zero, the default is 30. RecordTTL will not be used in AWS regions Alias targets, but will be used in CNAME targets, per AWS API contract.", 
+          "format": "int64"
+        }, 
+        "dnsName": {
+          "minLength": 1, 
+          "type": "string", 
+          "description": "dnsName is the hostname of the DNS record"
+        }, 
+        "recordType": {
+          "enum": [
+            "CNAME", 
+            "A"
+          ], 
+          "type": "string", 
+          "description": "recordType is the DNS record type. For example, \"A\" or \"CNAME\"."
+        }, 
+        "targets": {
+          "minItems": 1, 
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "targets are record targets."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

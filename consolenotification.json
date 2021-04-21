@@ -1,0 +1,74 @@
+{
+  "description": "ConsoleNotification is the extension for configuring openshift web console notifications.", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ConsoleNotification", 
+      "version": "v1", 
+      "group": "console.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "text"
+      ], 
+      "type": "object", 
+      "description": "ConsoleNotificationSpec is the desired console notification configuration.", 
+      "properties": {
+        "color": {
+          "type": "string", 
+          "description": "color is the color of the text for the notification as CSS data type color."
+        }, 
+        "text": {
+          "type": "string", 
+          "description": "text is the visible text of the notification."
+        }, 
+        "link": {
+          "required": [
+            "href", 
+            "text"
+          ], 
+          "type": "object", 
+          "description": "link is an object that holds notification link details.", 
+          "properties": {
+            "text": {
+              "type": "string", 
+              "description": "text is the display text for the link"
+            }, 
+            "href": {
+              "pattern": "^https://", 
+              "type": "string", 
+              "description": "href is the absolute secure URL for the link (must use https)"
+            }
+          }
+        }, 
+        "location": {
+          "pattern": "^(BannerTop|BannerBottom|BannerTopBottom)$", 
+          "type": "string", 
+          "description": "location is the location of the notification in the console. Valid values are: \"BannerTop\", \"BannerBottom\", \"BannerTopBottom\"."
+        }, 
+        "backgroundColor": {
+          "type": "string", 
+          "description": "backgroundColor is the color of the background for the notification as CSS data type color."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

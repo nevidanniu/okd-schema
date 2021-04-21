@@ -1,0 +1,205 @@
+{
+  "description": "Probe defines monitoring for a set of static targets or ingresses.", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Probe", 
+      "version": "v1", 
+      "group": "monitoring.coreos.com"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "Specification of desired Ingress selection for target discovery by Prometheus.", 
+      "properties": {
+        "interval": {
+          "type": "string", 
+          "description": "Interval at which targets are probed using the configured prober. If not specified Prometheus' global scrape interval is used."
+        }, 
+        "module": {
+          "type": "string", 
+          "description": "The module to use for probing specifying how to probe the target. Example module configuring in the blackbox exporter: https://github.com/prometheus/blackbox_exporter/blob/master/example.yml"
+        }, 
+        "jobName": {
+          "type": "string", 
+          "description": "The job name assigned to scraped metrics by default."
+        }, 
+        "scrapeTimeout": {
+          "type": "string", 
+          "description": "Timeout for scraping metrics from the Prometheus exporter."
+        }, 
+        "targets": {
+          "type": "object", 
+          "description": "Targets defines a set of static and/or dynamically discovered targets to be probed using the prober.", 
+          "properties": {
+            "ingress": {
+              "type": "object", 
+              "description": "Ingress defines the set of dynamically discovered ingress objects which hosts are considered for probing.", 
+              "properties": {
+                "selector": {
+                  "type": "object", 
+                  "description": "Select Ingress objects by labels.", 
+                  "properties": {
+                    "matchLabels": {
+                      "additionalProperties": {
+                        "type": "string"
+                      }, 
+                      "type": "object", 
+                      "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                    }, 
+                    "matchExpressions": {
+                      "items": {
+                        "required": [
+                          "key", 
+                          "operator"
+                        ], 
+                        "type": "object", 
+                        "description": "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.", 
+                        "properties": {
+                          "operator": {
+                            "type": "string", 
+                            "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                          }, 
+                          "values": {
+                            "items": {
+                              "type": "string"
+                            }, 
+                            "type": "array", 
+                            "description": "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "key is the label key that the selector applies to."
+                          }
+                        }
+                      }, 
+                      "type": "array", 
+                      "description": "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+                    }
+                  }
+                }, 
+                "namespaceSelector": {
+                  "type": "object", 
+                  "description": "Select Ingress objects by namespace.", 
+                  "properties": {
+                    "matchNames": {
+                      "items": {
+                        "type": "string"
+                      }, 
+                      "type": "array", 
+                      "description": "List of namespace names."
+                    }, 
+                    "any": {
+                      "type": "boolean", 
+                      "description": "Boolean describing whether all namespaces are selected in contrast to a list restricting them."
+                    }
+                  }
+                }, 
+                "relabelingConfigs": {
+                  "items": {
+                    "type": "object", 
+                    "description": "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs", 
+                    "properties": {
+                      "regex": {
+                        "type": "string", 
+                        "description": "Regular expression against which the extracted value is matched. Default is '(.*)'"
+                      }, 
+                      "targetLabel": {
+                        "type": "string", 
+                        "description": "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
+                      }, 
+                      "sourceLabels": {
+                        "items": {
+                          "type": "string"
+                        }, 
+                        "type": "array", 
+                        "description": "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+                      }, 
+                      "separator": {
+                        "type": "string", 
+                        "description": "Separator placed between concatenated source label values. default is ';'."
+                      }, 
+                      "action": {
+                        "type": "string", 
+                        "description": "Action to perform based on regex matching. Default is 'replace'"
+                      }, 
+                      "modulus": {
+                        "type": "integer", 
+                        "description": "Modulus to take of the hash of the source label values.", 
+                        "format": "int64"
+                      }, 
+                      "replacement": {
+                        "type": "string", 
+                        "description": "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
+                      }
+                    }
+                  }, 
+                  "type": "array", 
+                  "description": "RelabelConfigs to apply to samples before ingestion. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+                }
+              }
+            }, 
+            "staticConfig": {
+              "type": "object", 
+              "description": "StaticConfig defines static targets which are considers for probing. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#static_config.", 
+              "properties": {
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  }, 
+                  "type": "object", 
+                  "description": "Labels assigned to all metrics scraped from the targets."
+                }, 
+                "static": {
+                  "items": {
+                    "type": "string"
+                  }, 
+                  "type": "array", 
+                  "description": "Targets is a list of URLs to probe using the configured prober."
+                }
+              }
+            }
+          }
+        }, 
+        "prober": {
+          "required": [
+            "url"
+          ], 
+          "type": "object", 
+          "description": "Specification for the prober to use for probing targets. The prober.URL parameter is required. Targets cannot be probed if left empty.", 
+          "properties": {
+            "url": {
+              "type": "string", 
+              "description": "Mandatory URL of the prober."
+            }, 
+            "path": {
+              "type": "string", 
+              "description": "Path to collect metrics from. Defaults to `/probe`."
+            }, 
+            "scheme": {
+              "type": "string", 
+              "description": "HTTP scheme to use for scraping. Defaults to `http`."
+            }
+          }
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

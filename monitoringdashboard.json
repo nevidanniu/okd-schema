@@ -1,0 +1,11 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "MonitoringDashboard", 
+      "version": "v1alpha1", 
+      "group": "monitoring.kiali.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object"
+}

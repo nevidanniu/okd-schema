@@ -1,0 +1,459 @@
+{
+  "description": "PodMonitor defines monitoring for a set of pods.", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "PodMonitor", 
+      "version": "v1", 
+      "group": "monitoring.coreos.com"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "podMetricsEndpoints", 
+        "selector"
+      ], 
+      "type": "object", 
+      "description": "Specification of desired Pod selection for target discovery by Prometheus.", 
+      "properties": {
+        "targetLimit": {
+          "type": "integer", 
+          "description": "TargetLimit defines a limit on the number of scraped targets that will be accepted.", 
+          "format": "int64"
+        }, 
+        "podMetricsEndpoints": {
+          "items": {
+            "type": "object", 
+            "description": "PodMetricsEndpoint defines a scrapeable endpoint of a Kubernetes Pod serving Prometheus metrics.", 
+            "properties": {
+              "tlsConfig": {
+                "type": "object", 
+                "description": "TLS configuration to use when scraping the endpoint.", 
+                "properties": {
+                  "cert": {
+                    "type": "object", 
+                    "description": "Struct containing the client cert file for the targets.", 
+                    "properties": {
+                      "configMap": {
+                        "required": [
+                          "key"
+                        ], 
+                        "type": "object", 
+                        "description": "ConfigMap containing data to use for the targets.", 
+                        "properties": {
+                          "optional": {
+                            "type": "boolean", 
+                            "description": "Specify whether the ConfigMap or its key must be defined"
+                          }, 
+                          "name": {
+                            "type": "string", 
+                            "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "The key to select."
+                          }
+                        }
+                      }, 
+                      "secret": {
+                        "required": [
+                          "key"
+                        ], 
+                        "type": "object", 
+                        "description": "Secret containing data to use for the targets.", 
+                        "properties": {
+                          "optional": {
+                            "type": "boolean", 
+                            "description": "Specify whether the Secret or its key must be defined"
+                          }, 
+                          "name": {
+                            "type": "string", 
+                            "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "The key of the secret to select from.  Must be a valid secret key."
+                          }
+                        }
+                      }
+                    }
+                  }, 
+                  "serverName": {
+                    "type": "string", 
+                    "description": "Used to verify the hostname for the targets."
+                  }, 
+                  "keySecret": {
+                    "required": [
+                      "key"
+                    ], 
+                    "type": "object", 
+                    "description": "Secret containing the client key file for the targets.", 
+                    "properties": {
+                      "optional": {
+                        "type": "boolean", 
+                        "description": "Specify whether the Secret or its key must be defined"
+                      }, 
+                      "name": {
+                        "type": "string", 
+                        "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                      }, 
+                      "key": {
+                        "type": "string", 
+                        "description": "The key of the secret to select from.  Must be a valid secret key."
+                      }
+                    }
+                  }, 
+                  "ca": {
+                    "type": "object", 
+                    "description": "Struct containing the CA cert to use for the targets.", 
+                    "properties": {
+                      "configMap": {
+                        "required": [
+                          "key"
+                        ], 
+                        "type": "object", 
+                        "description": "ConfigMap containing data to use for the targets.", 
+                        "properties": {
+                          "optional": {
+                            "type": "boolean", 
+                            "description": "Specify whether the ConfigMap or its key must be defined"
+                          }, 
+                          "name": {
+                            "type": "string", 
+                            "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "The key to select."
+                          }
+                        }
+                      }, 
+                      "secret": {
+                        "required": [
+                          "key"
+                        ], 
+                        "type": "object", 
+                        "description": "Secret containing data to use for the targets.", 
+                        "properties": {
+                          "optional": {
+                            "type": "boolean", 
+                            "description": "Specify whether the Secret or its key must be defined"
+                          }, 
+                          "name": {
+                            "type": "string", 
+                            "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                          }, 
+                          "key": {
+                            "type": "string", 
+                            "description": "The key of the secret to select from.  Must be a valid secret key."
+                          }
+                        }
+                      }
+                    }
+                  }, 
+                  "insecureSkipVerify": {
+                    "type": "boolean", 
+                    "description": "Disable target certificate validation."
+                  }
+                }
+              }, 
+              "targetPort": {
+                "description": "Deprecated: Use 'port' instead.", 
+                "x-kubernetes-int-or-string": true
+              }, 
+              "proxyUrl": {
+                "type": "string", 
+                "description": "ProxyURL eg http://proxyserver:2195 Directs scrapes to proxy through this endpoint."
+              }, 
+              "interval": {
+                "type": "string", 
+                "description": "Interval at which metrics should be scraped"
+              }, 
+              "basicAuth": {
+                "type": "object", 
+                "description": "BasicAuth allow an endpoint to authenticate over basic authentication. More info: https://prometheus.io/docs/operating/configuration/#endpoint", 
+                "properties": {
+                  "username": {
+                    "required": [
+                      "key"
+                    ], 
+                    "type": "object", 
+                    "description": "The secret in the service monitor namespace that contains the username for authentication.", 
+                    "properties": {
+                      "optional": {
+                        "type": "boolean", 
+                        "description": "Specify whether the Secret or its key must be defined"
+                      }, 
+                      "name": {
+                        "type": "string", 
+                        "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                      }, 
+                      "key": {
+                        "type": "string", 
+                        "description": "The key of the secret to select from.  Must be a valid secret key."
+                      }
+                    }
+                  }, 
+                  "password": {
+                    "required": [
+                      "key"
+                    ], 
+                    "type": "object", 
+                    "description": "The secret in the service monitor namespace that contains the password for authentication.", 
+                    "properties": {
+                      "optional": {
+                        "type": "boolean", 
+                        "description": "Specify whether the Secret or its key must be defined"
+                      }, 
+                      "name": {
+                        "type": "string", 
+                        "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                      }, 
+                      "key": {
+                        "type": "string", 
+                        "description": "The key of the secret to select from.  Must be a valid secret key."
+                      }
+                    }
+                  }
+                }
+              }, 
+              "honorLabels": {
+                "type": "boolean", 
+                "description": "HonorLabels chooses the metric's labels on collisions with target labels."
+              }, 
+              "metricRelabelings": {
+                "items": {
+                  "type": "object", 
+                  "description": "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs", 
+                  "properties": {
+                    "regex": {
+                      "type": "string", 
+                      "description": "Regular expression against which the extracted value is matched. Default is '(.*)'"
+                    }, 
+                    "targetLabel": {
+                      "type": "string", 
+                      "description": "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
+                    }, 
+                    "sourceLabels": {
+                      "items": {
+                        "type": "string"
+                      }, 
+                      "type": "array", 
+                      "description": "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+                    }, 
+                    "separator": {
+                      "type": "string", 
+                      "description": "Separator placed between concatenated source label values. default is ';'."
+                    }, 
+                    "action": {
+                      "type": "string", 
+                      "description": "Action to perform based on regex matching. Default is 'replace'"
+                    }, 
+                    "modulus": {
+                      "type": "integer", 
+                      "description": "Modulus to take of the hash of the source label values.", 
+                      "format": "int64"
+                    }, 
+                    "replacement": {
+                      "type": "string", 
+                      "description": "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "MetricRelabelConfigs to apply to samples before ingestion."
+              }, 
+              "bearerTokenSecret": {
+                "required": [
+                  "key"
+                ], 
+                "type": "object", 
+                "description": "Secret to mount to read bearer token for scraping targets. The secret needs to be in the same namespace as the pod monitor and accessible by the Prometheus Operator.", 
+                "properties": {
+                  "optional": {
+                    "type": "boolean", 
+                    "description": "Specify whether the Secret or its key must be defined"
+                  }, 
+                  "name": {
+                    "type": "string", 
+                    "description": "Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names TODO: Add other useful fields. apiVersion, kind, uid?"
+                  }, 
+                  "key": {
+                    "type": "string", 
+                    "description": "The key of the secret to select from.  Must be a valid secret key."
+                  }
+                }
+              }, 
+              "honorTimestamps": {
+                "type": "boolean", 
+                "description": "HonorTimestamps controls whether Prometheus respects the timestamps present in scraped data."
+              }, 
+              "relabelings": {
+                "items": {
+                  "type": "object", 
+                  "description": "RelabelConfig allows dynamic rewriting of the label set, being applied to samples before ingestion. It defines `<metric_relabel_configs>`-section of Prometheus configuration. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#metric_relabel_configs", 
+                  "properties": {
+                    "regex": {
+                      "type": "string", 
+                      "description": "Regular expression against which the extracted value is matched. Default is '(.*)'"
+                    }, 
+                    "targetLabel": {
+                      "type": "string", 
+                      "description": "Label to which the resulting value is written in a replace action. It is mandatory for replace actions. Regex capture groups are available."
+                    }, 
+                    "sourceLabels": {
+                      "items": {
+                        "type": "string"
+                      }, 
+                      "type": "array", 
+                      "description": "The source labels select values from existing labels. Their content is concatenated using the configured separator and matched against the configured regular expression for the replace, keep, and drop actions."
+                    }, 
+                    "separator": {
+                      "type": "string", 
+                      "description": "Separator placed between concatenated source label values. default is ';'."
+                    }, 
+                    "action": {
+                      "type": "string", 
+                      "description": "Action to perform based on regex matching. Default is 'replace'"
+                    }, 
+                    "modulus": {
+                      "type": "integer", 
+                      "description": "Modulus to take of the hash of the source label values.", 
+                      "format": "int64"
+                    }, 
+                    "replacement": {
+                      "type": "string", 
+                      "description": "Replacement value against which a regex replace is performed if the regular expression matches. Regex capture groups are available. Default is '$1'"
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "RelabelConfigs to apply to samples before ingestion. More info: https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config"
+              }, 
+              "params": {
+                "additionalProperties": {
+                  "items": {
+                    "type": "string"
+                  }, 
+                  "type": "array"
+                }, 
+                "type": "object", 
+                "description": "Optional HTTP URL parameters"
+              }, 
+              "path": {
+                "type": "string", 
+                "description": "HTTP path to scrape for metrics."
+              }, 
+              "scheme": {
+                "type": "string", 
+                "description": "HTTP scheme to use for scraping."
+              }, 
+              "port": {
+                "type": "string", 
+                "description": "Name of the pod port this endpoint refers to. Mutually exclusive with targetPort."
+              }, 
+              "scrapeTimeout": {
+                "type": "string", 
+                "description": "Timeout after which the scrape is ended"
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "A list of endpoints allowed as part of this PodMonitor."
+        }, 
+        "selector": {
+          "type": "object", 
+          "description": "Selector to select Pod objects.", 
+          "properties": {
+            "matchLabels": {
+              "additionalProperties": {
+                "type": "string"
+              }, 
+              "type": "object", 
+              "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+            }, 
+            "matchExpressions": {
+              "items": {
+                "required": [
+                  "key", 
+                  "operator"
+                ], 
+                "type": "object", 
+                "description": "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.", 
+                "properties": {
+                  "operator": {
+                    "type": "string", 
+                    "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                  }, 
+                  "values": {
+                    "items": {
+                      "type": "string"
+                    }, 
+                    "type": "array", 
+                    "description": "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                  }, 
+                  "key": {
+                    "type": "string", 
+                    "description": "key is the label key that the selector applies to."
+                  }
+                }
+              }, 
+              "type": "array", 
+              "description": "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+            }
+          }
+        }, 
+        "sampleLimit": {
+          "type": "integer", 
+          "description": "SampleLimit defines per-scrape limit on number of scraped samples that will be accepted.", 
+          "format": "int64"
+        }, 
+        "jobLabel": {
+          "type": "string", 
+          "description": "The label to use to retrieve the job name from."
+        }, 
+        "namespaceSelector": {
+          "type": "object", 
+          "description": "Selector to select which namespaces the Endpoints objects are discovered from.", 
+          "properties": {
+            "matchNames": {
+              "items": {
+                "type": "string"
+              }, 
+              "type": "array", 
+              "description": "List of namespace names."
+            }, 
+            "any": {
+              "type": "boolean", 
+              "description": "Boolean describing whether all namespaces are selected in contrast to a list restricting them."
+            }
+          }
+        }, 
+        "podTargetLabels": {
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "PodTargetLabels transfers labels on the Kubernetes Pod onto the target."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

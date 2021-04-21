@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "name", 
+    "kind", 
+    "version"
+  ], 
+  "type": "object", 
+  "description": "APIResourceReference is a Kubernetes resource type used by a custom resource", 
+  "properties": {
+    "kind": {
+      "type": "string"
+    }, 
+    "version": {
+      "type": "string"
+    }, 
+    "name": {
+      "type": "string"
+    }
+  }
+}

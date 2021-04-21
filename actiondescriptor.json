@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "path"
+  ], 
+  "type": "object", 
+  "description": "ActionDescriptor describes a declarative action that can be performed on a custom resource instance", 
+  "properties": {
+    "x-descriptors": {
+      "items": {
+        "type": "string"
+      }, 
+      "type": "array"
+    }, 
+    "path": {
+      "type": "string"
+    }, 
+    "displayName": {
+      "type": "string"
+    }, 
+    "description": {
+      "type": "string"
+    }, 
+    "value": {
+      "type": "string", 
+      "format": "byte"
+    }
+  }
+}

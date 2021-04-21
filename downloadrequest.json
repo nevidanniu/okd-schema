@@ -1,0 +1,83 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "DownloadRequest", 
+      "version": "v1", 
+      "group": "velero.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "DownloadRequest is a request to download an artifact from backup object storage, such as a backup log file.", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "DownloadRequestStatus is the current status of a DownloadRequest.", 
+      "properties": {
+        "downloadURL": {
+          "type": "string", 
+          "description": "DownloadURL contains the pre-signed URL for the target file."
+        }, 
+        "phase": {
+          "enum": [
+            "New", 
+            "Processed"
+          ], 
+          "type": "string", 
+          "description": "Phase is the current state of the DownloadRequest."
+        }, 
+        "expiration": {
+          "description": "Expiration is when this DownloadRequest expires and can be deleted by the system.", 
+          "format": "date-time"
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "target"
+      ], 
+      "type": "object", 
+      "description": "DownloadRequestSpec is the specification for a download request.", 
+      "properties": {
+        "target": {
+          "required": [
+            "kind", 
+            "name"
+          ], 
+          "type": "object", 
+          "description": "Target is what to download (e.g. logs for a backup).", 
+          "properties": {
+            "kind": {
+              "enum": [
+                "BackupLog", 
+                "BackupContents", 
+                "BackupVolumeSnapshots", 
+                "BackupResourceList", 
+                "RestoreLog", 
+                "RestoreResults"
+              ], 
+              "type": "string", 
+              "description": "Kind is the type of file to download."
+            }, 
+            "name": {
+              "type": "string", 
+              "description": "Name is the name of the kubernetes resource with which the file is associated."
+            }
+          }
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

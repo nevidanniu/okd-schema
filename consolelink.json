@@ -1,0 +1,126 @@
+{
+  "description": "ConsoleLink is an extension for customizing OpenShift web console links.", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ConsoleLink", 
+      "version": "v1", 
+      "group": "console.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "href", 
+        "location", 
+        "text"
+      ], 
+      "type": "object", 
+      "description": "ConsoleLinkSpec is the desired console link configuration.", 
+      "properties": {
+        "namespaceDashboard": {
+          "type": "object", 
+          "description": "namespaceDashboard holds information about namespaces in which the dashboard link should appear, and it is applicable only when location is set to NamespaceDashboard. If not specified, the link will appear in all namespaces.", 
+          "properties": {
+            "namespaceSelector": {
+              "type": "object", 
+              "description": "namespaceSelector is used to select the Namespaces that should contain dashboard link by label. If the namespace labels match, dashboard link will be shown for the namespaces.", 
+              "properties": {
+                "matchLabels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  }, 
+                  "type": "object", 
+                  "description": "matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an element of matchExpressions, whose key field is \"key\", the operator is \"In\", and the values array contains only \"value\". The requirements are ANDed."
+                }, 
+                "matchExpressions": {
+                  "items": {
+                    "required": [
+                      "key", 
+                      "operator"
+                    ], 
+                    "type": "object", 
+                    "description": "A label selector requirement is a selector that contains values, a key, and an operator that relates the key and values.", 
+                    "properties": {
+                      "operator": {
+                        "type": "string", 
+                        "description": "operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist."
+                      }, 
+                      "values": {
+                        "items": {
+                          "type": "string"
+                        }, 
+                        "type": "array", 
+                        "description": "values is an array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch."
+                      }, 
+                      "key": {
+                        "type": "string", 
+                        "description": "key is the label key that the selector applies to."
+                      }
+                    }
+                  }, 
+                  "type": "array", 
+                  "description": "matchExpressions is a list of label selector requirements. The requirements are ANDed."
+                }
+              }
+            }, 
+            "namespaces": {
+              "items": {
+                "type": "string"
+              }, 
+              "type": "array", 
+              "description": "namespaces is an array of namespace names in which the dashboard link should appear."
+            }
+          }
+        }, 
+        "href": {
+          "pattern": "^https://", 
+          "type": "string", 
+          "description": "href is the absolute secure URL for the link (must use https)"
+        }, 
+        "applicationMenu": {
+          "required": [
+            "section"
+          ], 
+          "type": "object", 
+          "description": "applicationMenu holds information about section and icon used for the link in the application menu, and it is applicable only when location is set to ApplicationMenu.", 
+          "properties": {
+            "imageURL": {
+              "type": "string", 
+              "description": "imageUrl is the URL for the icon used in front of the link in the application menu. The URL must be an HTTPS URL or a Data URI. The image should be square and will be shown at 24x24 pixels."
+            }, 
+            "section": {
+              "type": "string", 
+              "description": "section is the section of the application menu in which the link should appear. This can be any text that will appear as a subheading in the application menu dropdown. A new section will be created if the text does not match text of an existing section."
+            }
+          }
+        }, 
+        "location": {
+          "pattern": "^(ApplicationMenu|HelpMenu|UserMenu|NamespaceDashboard)$", 
+          "type": "string", 
+          "description": "location determines which location in the console the link will be appended to (ApplicationMenu, HelpMenu, UserMenu, NamespaceDashboard)."
+        }, 
+        "text": {
+          "type": "string", 
+          "description": "text is the display text for the link"
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "string", 
+  "description": "OperatorVersion is a wrapper around semver.Version which supports correct marshaling to YAML and JSON.", 
+  "format": "semver"
+}

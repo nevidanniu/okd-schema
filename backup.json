@@ -1,0 +1,148 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Backup", 
+      "version": "v1", 
+      "group": "velero.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "Backup is a Velero resource that respresents the capture of Kubernetes cluster state at a point in time (API objects and associated volume state).", 
+  "properties": {
+    "status": {
+      "type": "object", 
+      "description": "BackupStatus captures the current status of a Velero backup.", 
+      "properties": {
+        "completionTimestamp": {
+          "description": "CompletionTimestamp records the time a backup was completed. Completion time is recorded even on failed backups. Completion time is recorded before uploading the backup object. The server's time is used for CompletionTimestamps", 
+          "format": "date-time"
+        }, 
+        "errors": {
+          "type": "integer", 
+          "description": "Errors is a count of all error messages that were generated during execution of the backup.  The actual errors are in the backup's log file in object storage."
+        }, 
+        "warnings": {
+          "type": "integer", 
+          "description": "Warnings is a count of all warning messages that were generated during execution of the backup. The actual warnings are in the backup's log file in object storage."
+        }, 
+        "startTimestamp": {
+          "description": "StartTimestamp records the time a backup was started. Separate from CreationTimestamp, since that value changes on restores. The server's time is used for StartTimestamps", 
+          "format": "date-time"
+        }, 
+        "volumeSnapshotsAttempted": {
+          "type": "integer", 
+          "description": "VolumeSnapshotsAttempted is the total number of attempted volume snapshots for this backup."
+        }, 
+        "validationErrors": {
+          "description": "ValidationErrors is a slice of all validation errors (if applicable)."
+        }, 
+        "formatVersion": {
+          "type": "string", 
+          "description": "FormatVersion is the backup format version, including major, minor, and patch version."
+        }, 
+        "version": {
+          "type": "integer", 
+          "description": "Version is the backup format major version. Deprecated: Please see FormatVersion"
+        }, 
+        "expiration": {
+          "description": "Expiration is when this Backup is eligible for garbage-collection.", 
+          "format": "date-time"
+        }, 
+        "phase": {
+          "enum": [
+            "New", 
+            "FailedValidation", 
+            "InProgress", 
+            "Completed", 
+            "PartiallyFailed", 
+            "Failed", 
+            "Deleting"
+          ], 
+          "type": "string", 
+          "description": "Phase is the current state of the Backup."
+        }, 
+        "progress": {
+          "description": "Progress contains information about the backup's execution progress. Note that this information is best-effort only -- if Velero fails to update it during a backup for any reason, it may be inaccurate/stale."
+        }, 
+        "volumeSnapshotsCompleted": {
+          "type": "integer", 
+          "description": "VolumeSnapshotsCompleted is the total number of successfully completed volume snapshots for this backup."
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "BackupSpec defines the specification for a Velero backup.", 
+      "properties": {
+        "excludedNamespaces": {
+          "description": "ExcludedNamespaces contains a list of namespaces that are not included in the backup."
+        }, 
+        "excludedResources": {
+          "description": "ExcludedResources is a slice of resource names that are not included in the backup."
+        }, 
+        "includeClusterResources": {
+          "description": "IncludeClusterResources specifies whether cluster-scoped resources should be included for consideration in the backup."
+        }, 
+        "labelSelector": {
+          "description": "LabelSelector is a metav1.LabelSelector to filter with when adding individual objects to the backup. If empty or nil, all objects are included. Optional."
+        }, 
+        "storageLocation": {
+          "type": "string", 
+          "description": "StorageLocation is a string containing the name of a BackupStorageLocation where the backup should be stored."
+        }, 
+        "hooks": {
+          "type": "object", 
+          "description": "Hooks represent custom behaviors that should be executed at different phases of the backup.", 
+          "properties": {
+            "resources": {
+              "description": "Resources are hooks that should be executed when backing up individual instances of a resource."
+            }
+          }
+        }, 
+        "orderedResources": {
+          "additionalProperties": {
+            "type": "string"
+          }, 
+          "description": "OrderedResources specifies the backup order of resources of specific Kind. The map key is the Kind name and value is a list of resource names separeted by commas. Each resource name has format \"namespace/resourcename\".  For cluster resources, simply use \"resourcename\"."
+        }, 
+        "defaultVolumesToRestic": {
+          "type": "boolean", 
+          "description": "DefaultVolumesToRestic specifies whether restic should be used to take a backup of all pod volumes by default."
+        }, 
+        "volumeSnapshotLocations": {
+          "items": {
+            "type": "string"
+          }, 
+          "type": "array", 
+          "description": "VolumeSnapshotLocations is a list containing names of VolumeSnapshotLocations associated with this backup."
+        }, 
+        "includedResources": {
+          "description": "IncludedResources is a slice of resource names to include in the backup. If empty, all resources are included."
+        }, 
+        "ttl": {
+          "type": "string", 
+          "description": "TTL is a time.Duration-parseable string describing how long the Backup should be retained for."
+        }, 
+        "snapshotVolumes": {
+          "description": "SnapshotVolumes specifies whether to take cloud snapshots of any PV's referenced in the set of objects included in the Backup."
+        }, 
+        "includedNamespaces": {
+          "description": "IncludedNamespaces is a slice of namespace names to include objects from. If empty, all namespaces are included."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

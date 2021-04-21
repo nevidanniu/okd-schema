@@ -1,0 +1,82 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "PeerAuthentication", 
+      "version": "v1beta1", 
+      "group": "security.istio.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "PeerAuthentication defines how traffic will be tunneled (or not) to the sidecar.", 
+      "properties": {
+        "mtls": {
+          "type": "object", 
+          "description": "Mutual TLS settings for workload.", 
+          "properties": {
+            "mode": {
+              "enum": [
+                "UNSET", 
+                "DISABLE", 
+                "PERMISSIVE", 
+                "STRICT"
+              ], 
+              "type": "string", 
+              "description": "Defines the mTLS mode used for peer authentication."
+            }
+          }
+        }, 
+        "portLevelMtls": {
+          "additionalProperties": {
+            "type": "object", 
+            "properties": {
+              "mode": {
+                "enum": [
+                  "UNSET", 
+                  "DISABLE", 
+                  "PERMISSIVE", 
+                  "STRICT"
+                ], 
+                "type": "string", 
+                "description": "Defines the mTLS mode used for peer authentication."
+              }
+            }
+          }, 
+          "type": "object", 
+          "description": "Port specific mutual TLS settings."
+        }, 
+        "selector": {
+          "type": "object", 
+          "description": "The selector determines the workloads to apply the ChannelAuthentication on.", 
+          "properties": {
+            "matchLabels": {
+              "additionalProperties": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "type": "object"
+            }
+          }
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

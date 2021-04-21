@@ -1,0 +1,436 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "Sidecar", 
+      "version": "v1alpha3", 
+      "group": "networking.istio.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "Configuration affecting network reachability of a sidecar. See more details at: https://istio.io/docs/reference/config/networking/sidecar.html", 
+      "properties": {
+        "outboundTrafficPolicy": {
+          "type": "object", 
+          "description": "Configuration for the outbound traffic policy.", 
+          "properties": {
+            "egressProxy": {
+              "type": "object", 
+              "properties": {
+                "subset": {
+                  "type": "string", 
+                  "description": "The name of a subset within the service.", 
+                  "format": "string"
+                }, 
+                "host": {
+                  "type": "string", 
+                  "description": "The name of a service from the service registry.", 
+                  "format": "string"
+                }, 
+                "port": {
+                  "type": "object", 
+                  "description": "Specifies the port on the host that is being addressed.", 
+                  "properties": {
+                    "number": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }, 
+            "mode": {
+              "enum": [
+                "REGISTRY_ONLY", 
+                "ALLOW_ANY"
+              ], 
+              "type": "string"
+            }
+          }
+        }, 
+        "workloadSelector": {
+          "type": "object", 
+          "properties": {
+            "labels": {
+              "additionalProperties": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "type": "object"
+            }
+          }
+        }, 
+        "ingress": {
+          "items": {
+            "type": "object", 
+            "properties": {
+              "captureMode": {
+                "enum": [
+                  "DEFAULT", 
+                  "IPTABLES", 
+                  "NONE"
+                ], 
+                "type": "string"
+              }, 
+              "bind": {
+                "type": "string", 
+                "description": "The IP to which the listener should be bound.", 
+                "format": "string"
+              }, 
+              "defaultEndpoint": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "port": {
+                "type": "object", 
+                "description": "The port associated with the listener.", 
+                "properties": {
+                  "protocol": {
+                    "type": "string", 
+                    "description": "The protocol exposed on the port.", 
+                    "format": "string"
+                  }, 
+                  "name": {
+                    "type": "string", 
+                    "description": "Label assigned to the port.", 
+                    "format": "string"
+                  }, 
+                  "number": {
+                    "type": "integer", 
+                    "description": "A valid non-negative integer port number."
+                  }
+                }
+              }, 
+              "localhostClientTls": {
+                "type": "object", 
+                "properties": {
+                  "subjectAltNames": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array"
+                  }, 
+                  "clientCertificate": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `MUTUAL`.", 
+                    "format": "string"
+                  }, 
+                  "privateKey": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `MUTUAL`.", 
+                    "format": "string"
+                  }, 
+                  "sni": {
+                    "type": "string", 
+                    "description": "SNI string to present to the server during TLS handshake.", 
+                    "format": "string"
+                  }, 
+                  "caCertificates": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "mode": {
+                    "enum": [
+                      "DISABLE", 
+                      "SIMPLE", 
+                      "MUTUAL", 
+                      "ISTIO_MUTUAL"
+                    ], 
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }, 
+          "type": "array"
+        }, 
+        "egress": {
+          "items": {
+            "type": "object", 
+            "properties": {
+              "captureMode": {
+                "enum": [
+                  "DEFAULT", 
+                  "IPTABLES", 
+                  "NONE"
+                ], 
+                "type": "string"
+              }, 
+              "bind": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "localhostServerTls": {
+                "type": "object", 
+                "properties": {
+                  "cipherSuites": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array", 
+                    "description": "Optional: If specified, only support the specified cipher list."
+                  }, 
+                  "subjectAltNames": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array"
+                  }, 
+                  "maxProtocolVersion": {
+                    "enum": [
+                      "TLS_AUTO", 
+                      "TLSV1_0", 
+                      "TLSV1_1", 
+                      "TLSV1_2", 
+                      "TLSV1_3"
+                    ], 
+                    "type": "string", 
+                    "description": "Optional: Maximum TLS protocol version."
+                  }, 
+                  "httpsRedirect": {
+                    "type": "boolean"
+                  }, 
+                  "privateKey": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`.", 
+                    "format": "string"
+                  }, 
+                  "verifyCertificateHash": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array"
+                  }, 
+                  "credentialName": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "caCertificates": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `MUTUAL`.", 
+                    "format": "string"
+                  }, 
+                  "mode": {
+                    "enum": [
+                      "PASSTHROUGH", 
+                      "SIMPLE", 
+                      "MUTUAL", 
+                      "AUTO_PASSTHROUGH", 
+                      "ISTIO_MUTUAL"
+                    ], 
+                    "type": "string"
+                  }, 
+                  "verifyCertificateSpki": {
+                    "items": {
+                      "type": "string", 
+                      "format": "string"
+                    }, 
+                    "type": "array"
+                  }, 
+                  "minProtocolVersion": {
+                    "enum": [
+                      "TLS_AUTO", 
+                      "TLSV1_0", 
+                      "TLSV1_1", 
+                      "TLSV1_2", 
+                      "TLSV1_3"
+                    ], 
+                    "type": "string", 
+                    "description": "Optional: Minimum TLS protocol version."
+                  }, 
+                  "serverCertificate": {
+                    "type": "string", 
+                    "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`.", 
+                    "format": "string"
+                  }
+                }
+              }, 
+              "hosts": {
+                "items": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "type": "array"
+              }, 
+              "port": {
+                "type": "object", 
+                "description": "The port associated with the listener.", 
+                "properties": {
+                  "protocol": {
+                    "type": "string", 
+                    "description": "The protocol exposed on the port.", 
+                    "format": "string"
+                  }, 
+                  "name": {
+                    "type": "string", 
+                    "description": "Label assigned to the port.", 
+                    "format": "string"
+                  }, 
+                  "number": {
+                    "type": "integer", 
+                    "description": "A valid non-negative integer port number."
+                  }
+                }
+              }
+            }
+          }, 
+          "type": "array"
+        }, 
+        "localhost": {
+          "type": "object", 
+          "properties": {
+            "serverTls": {
+              "type": "object", 
+              "properties": {
+                "cipherSuites": {
+                  "items": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "type": "array", 
+                  "description": "Optional: If specified, only support the specified cipher list."
+                }, 
+                "subjectAltNames": {
+                  "items": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "type": "array"
+                }, 
+                "maxProtocolVersion": {
+                  "enum": [
+                    "TLS_AUTO", 
+                    "TLSV1_0", 
+                    "TLSV1_1", 
+                    "TLSV1_2", 
+                    "TLSV1_3"
+                  ], 
+                  "type": "string", 
+                  "description": "Optional: Maximum TLS protocol version."
+                }, 
+                "httpsRedirect": {
+                  "type": "boolean"
+                }, 
+                "privateKey": {
+                  "type": "string", 
+                  "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`.", 
+                  "format": "string"
+                }, 
+                "verifyCertificateHash": {
+                  "items": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "type": "array"
+                }, 
+                "credentialName": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "caCertificates": {
+                  "type": "string", 
+                  "description": "REQUIRED if mode is `MUTUAL`.", 
+                  "format": "string"
+                }, 
+                "mode": {
+                  "enum": [
+                    "PASSTHROUGH", 
+                    "SIMPLE", 
+                    "MUTUAL", 
+                    "AUTO_PASSTHROUGH", 
+                    "ISTIO_MUTUAL"
+                  ], 
+                  "type": "string"
+                }, 
+                "verifyCertificateSpki": {
+                  "items": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "type": "array"
+                }, 
+                "minProtocolVersion": {
+                  "enum": [
+                    "TLS_AUTO", 
+                    "TLSV1_0", 
+                    "TLSV1_1", 
+                    "TLSV1_2", 
+                    "TLSV1_3"
+                  ], 
+                  "type": "string", 
+                  "description": "Optional: Minimum TLS protocol version."
+                }, 
+                "serverCertificate": {
+                  "type": "string", 
+                  "description": "REQUIRED if mode is `SIMPLE` or `MUTUAL`.", 
+                  "format": "string"
+                }
+              }
+            }, 
+            "clientTls": {
+              "type": "object", 
+              "properties": {
+                "subjectAltNames": {
+                  "items": {
+                    "type": "string", 
+                    "format": "string"
+                  }, 
+                  "type": "array"
+                }, 
+                "clientCertificate": {
+                  "type": "string", 
+                  "description": "REQUIRED if mode is `MUTUAL`.", 
+                  "format": "string"
+                }, 
+                "privateKey": {
+                  "type": "string", 
+                  "description": "REQUIRED if mode is `MUTUAL`.", 
+                  "format": "string"
+                }, 
+                "sni": {
+                  "type": "string", 
+                  "description": "SNI string to present to the server during TLS handshake.", 
+                  "format": "string"
+                }, 
+                "caCertificates": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "mode": {
+                  "enum": [
+                    "DISABLE", 
+                    "SIMPLE", 
+                    "MUTUAL", 
+                    "ISTIO_MUTUAL"
+                  ], 
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

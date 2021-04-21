@@ -1,0 +1,116 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "RequestAuthentication", 
+      "version": "v1beta1", 
+      "group": "security.istio.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "RequestAuthentication defines what request authentication methods are supported by a workload.", 
+      "properties": {
+        "jwtRules": {
+          "items": {
+            "type": "object", 
+            "properties": {
+              "jwks_uri": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "jwks": {
+                "type": "string", 
+                "description": "JSON Web Key Set of public keys to validate signature of the JWT.", 
+                "format": "string"
+              }, 
+              "forwardOriginalToken": {
+                "type": "boolean", 
+                "description": "If set to true, the orginal token will be kept for the ustream request."
+              }, 
+              "audiences": {
+                "items": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "type": "array"
+              }, 
+              "outputPayloadToHeader": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "fromParams": {
+                "items": {
+                  "type": "string", 
+                  "format": "string"
+                }, 
+                "type": "array", 
+                "description": "List of query parameters from which JWT is expected."
+              }, 
+              "jwksUri": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "fromHeaders": {
+                "items": {
+                  "type": "object", 
+                  "properties": {
+                    "prefix": {
+                      "type": "string", 
+                      "description": "The prefix that should be stripped before decoding the token.", 
+                      "format": "string"
+                    }, 
+                    "name": {
+                      "type": "string", 
+                      "description": "The HTTP header name.", 
+                      "format": "string"
+                    }
+                  }
+                }, 
+                "type": "array", 
+                "description": "List of header locations from which JWT is expected."
+              }, 
+              "issuer": {
+                "type": "string", 
+                "description": "Identifies the issuer that issued the JWT.", 
+                "format": "string"
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "Define the list of JWTs that can be validated at the selected workloads' proxy."
+        }, 
+        "selector": {
+          "type": "object", 
+          "description": "The selector determines the workloads to apply the RequestAuthentication on.", 
+          "properties": {
+            "matchLabels": {
+              "additionalProperties": {
+                "type": "string", 
+                "format": "string"
+              }, 
+              "type": "object"
+            }
+          }
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

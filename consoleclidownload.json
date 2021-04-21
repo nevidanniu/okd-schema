@@ -1,0 +1,69 @@
+{
+  "description": "ConsoleCLIDownload is an extension for configuring openshift web console command line interface (CLI) downloads.", 
+  "required": [
+    "spec"
+  ], 
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "ConsoleCLIDownload", 
+      "version": "v1", 
+      "group": "console.openshift.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "properties": {
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "required": [
+        "description", 
+        "displayName", 
+        "links"
+      ], 
+      "type": "object", 
+      "description": "ConsoleCLIDownloadSpec is the desired cli download configuration.", 
+      "properties": {
+        "displayName": {
+          "type": "string", 
+          "description": "displayName is the display name of the CLI download."
+        }, 
+        "description": {
+          "type": "string", 
+          "description": "description is the description of the CLI download (can include markdown)."
+        }, 
+        "links": {
+          "items": {
+            "required": [
+              "href"
+            ], 
+            "type": "object", 
+            "properties": {
+              "text": {
+                "type": "string", 
+                "description": "text is the display text for the link"
+              }, 
+              "href": {
+                "pattern": "^https://", 
+                "type": "string", 
+                "description": "href is the absolute secure URL for the link (must use https)"
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "links is a list of objects that provide CLI download link details."
+        }
+      }
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

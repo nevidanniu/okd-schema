@@ -1,0 +1,11 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "OverlappingRangeIPReservation", 
+      "version": "v1alpha1", 
+      "group": "whereabouts.cni.cncf.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object"
+}

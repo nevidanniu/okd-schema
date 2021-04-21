@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "group", 
+    "version", 
+    "kind"
+  ], 
+  "type": "object", 
+  "description": "GroupVersionKind unambiguously identifies a kind.  It doesn't anonymously include GroupVersion to avoid automatic coersion.  It doesn't use a GroupVersion to avoid custom marshalling", 
+  "properties": {
+    "kind": {
+      "type": "string"
+    }, 
+    "version": {
+      "type": "string"
+    }, 
+    "group": {
+      "type": "string"
+    }
+  }
+}

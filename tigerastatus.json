@@ -1,0 +1,75 @@
+{
+  "x-kubernetes-group-version-kind": [
+    {
+      "kind": "TigeraStatus", 
+      "version": "v1", 
+      "group": "operator.tigera.io"
+    }
+  ], 
+  "$schema": "http://json-schema.org/schema#", 
+  "type": "object", 
+  "description": "TigeraStatus represents the most recently observed status for Calico or a Calico Enterprise functional area.", 
+  "properties": {
+    "status": {
+      "required": [
+        "conditions"
+      ], 
+      "type": "object", 
+      "description": "TigeraStatusStatus defines the observed state of TigeraStatus", 
+      "properties": {
+        "conditions": {
+          "items": {
+            "required": [
+              "lastTransitionTime", 
+              "status", 
+              "type"
+            ], 
+            "type": "object", 
+            "description": "TigeraStatusCondition represents a condition attached to a particular component.", 
+            "properties": {
+              "status": {
+                "type": "string", 
+                "description": "The status of the condition. May be True, False, or Unknown."
+              }, 
+              "type": {
+                "type": "string", 
+                "description": "The type of condition. May be Available, Progressing, or Degraded."
+              }, 
+              "message": {
+                "type": "string", 
+                "description": "Optionally, a detailed message providing additional context."
+              }, 
+              "lastTransitionTime": {
+                "type": "string", 
+                "description": "The timestamp representing the start time for the current status.", 
+                "format": "date-time"
+              }, 
+              "reason": {
+                "type": "string", 
+                "description": "A brief reason explaining the condition."
+              }
+            }
+          }, 
+          "type": "array", 
+          "description": "Conditions represents the latest observed set of conditions for this component. A component may be one or more of Available, Progressing, or Degraded."
+        }
+      }
+    }, 
+    "kind": {
+      "type": "string", 
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds"
+    }, 
+    "spec": {
+      "type": "object", 
+      "description": "TigeraStatusSpec defines the desired state of TigeraStatus"
+    }, 
+    "apiVersion": {
+      "type": "string", 
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources"
+    }, 
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata", 
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/schema#", 
+  "required": [
+    "name", 
+    "group", 
+    "version", 
+    "kind"
+  ], 
+  "type": "object", 
+  "description": "APIServiceDescription provides details to OLM about apis provided via aggregation", 
+  "properties": {
+    "kind": {
+      "type": "string"
+    }, 
+    "group": {
+      "type": "string"
+    }, 
+    "name": {
+      "type": "string"
+    }, 
+    "specDescriptors": {
+      "items": {
+        "$ref": "_definitions.json#/definitions/com.github.operator-framework.api.pkg.operators.v1alpha1.SpecDescriptor"
+      }, 
+      "type": "array"
+    }, 
+    "description": {
+      "type": "string"
+    }, 
+    "actionDescriptors": {
+      "items": {
+        "$ref": "_definitions.json#/definitions/com.github.operator-framework.api.pkg.operators.v1alpha1.ActionDescriptor"
+      }, 
+      "type": "array"
+    }, 
+    "deploymentName": {
+      "type": "string"
+    }, 
+    "version": {
+      "type": "string"
+    }, 
+    "displayName": {
+      "type": "string"
+    }, 
+    "containerPort": {
+      "type": "integer", 
+      "format": "int32"
+    }, 
+    "resources": {
+      "items": {
+        "$ref": "_definitions.json#/definitions/com.github.operator-framework.api.pkg.operators.v1alpha1.APIResourceReference"
+      }, 
+      "type": "array"
+    }, 
+    "statusDescriptors": {
+      "items": {
+        "$ref": "_definitions.json#/definitions/com.github.operator-framework.api.pkg.operators.v1alpha1.StatusDescriptor"
+      }, 
+      "type": "array"
+    }
+  }
+}
