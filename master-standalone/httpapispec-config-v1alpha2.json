@@ -1,0 +1,276 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "apiKeys": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "cookie": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "header": {
+                "description": "API key is sent in a request header.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "query": {
+                "description": "API Key is sent as a query parameter.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        },
+        "api_keys": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "cookie": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "header": {
+                "description": "API key is sent in a request header.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "query": {
+                "description": "API Key is sent as a query parameter.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "attributes": {
+              "description": "A map of attribute name to its value.",
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "boolValue": {
+                    "type": "boolean"
+                  },
+                  "bytesValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "binary"
+                  },
+                  "doubleValue": {
+                    "type": "number",
+                    "format": "double"
+                  },
+                  "durationValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "int64Value": {
+                    "type": "integer",
+                    "format": "int64"
+                  },
+                  "stringMapValue": {
+                    "type": "object",
+                    "properties": {
+                      "entries": {
+                        "description": "Holds a set of name/value pairs.",
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "string"
+                        }
+                      }
+                    }
+                  },
+                  "stringValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "string"
+                  },
+                  "timestampValue": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "dateTime"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "patterns": {
+          "description": "List of HTTP patterns to match.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "attributes": {
+                    "description": "A map of attribute name to its value.",
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "boolValue": {
+                          "type": "boolean"
+                        },
+                        "bytesValue": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "binary"
+                        },
+                        "doubleValue": {
+                          "type": "number",
+                          "format": "double"
+                        },
+                        "durationValue": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "int64Value": {
+                          "type": "integer",
+                          "format": "int64"
+                        },
+                        "stringMapValue": {
+                          "type": "object",
+                          "properties": {
+                            "entries": {
+                              "description": "Holds a set of name/value pairs.",
+                              "type": "object",
+                              "additionalProperties": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "format": "string"
+                              }
+                            }
+                          }
+                        },
+                        "stringValue": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "string"
+                        },
+                        "timestampValue": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "dateTime"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "httpMethod": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "regex": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "uriTemplate": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "config.istio.io",
+      "kind": "HTTPAPISpec",
+      "version": "v1alpha2"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}

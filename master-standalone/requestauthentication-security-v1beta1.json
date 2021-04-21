@@ -1,0 +1,164 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "description": "RequestAuthentication defines what request authentication methods are supported by a workload.",
+      "type": "object",
+      "properties": {
+        "jwtRules": {
+          "description": "Define the list of JWTs that can be validated at the selected workloads' proxy.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "audiences": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "forwardOriginalToken": {
+                "description": "If set to true, the orginal token will be kept for the ustream request.",
+                "type": "boolean"
+              },
+              "fromHeaders": {
+                "description": "List of header locations from which JWT is expected.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "description": "The HTTP header name.",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "string"
+                    },
+                    "prefix": {
+                      "description": "The prefix that should be stripped before decoding the token.",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "string"
+                    }
+                  }
+                }
+              },
+              "fromParams": {
+                "description": "List of query parameters from which JWT is expected.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "issuer": {
+                "description": "Identifies the issuer that issued the JWT.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "jwks": {
+                "description": "JSON Web Key Set of public keys to validate signature of the JWT.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "jwksUri": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "jwks_uri": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "outputPayloadToHeader": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        },
+        "selector": {
+          "description": "The selector determines the workloads to apply the RequestAuthentication on.",
+          "type": "object",
+          "properties": {
+            "matchLabels": {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "security.istio.io",
+      "kind": "RequestAuthentication",
+      "version": "v1beta1"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}

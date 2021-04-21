@@ -1,0 +1,380 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "description": "See more details at:",
+      "type": "object",
+      "properties": {
+        "actions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "constraints": {
+                "description": "Optional.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "description": "Key of the constraint.",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "string"
+                    },
+                    "values": {
+                      "description": "List of valid values for the constraint.",
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "hosts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "methods": {
+                "description": "Optional.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notHosts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notMethods": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notPaths": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notPorts": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "paths": {
+                "description": "Optional.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "ports": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "services": {
+                "description": "A list of service names.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "ENFORCED",
+            "PERMISSIVE"
+          ]
+        },
+        "role": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        },
+        "roleRef": {
+          "description": "Reference to the ServiceRole object.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "description": "The type of the role being referenced.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "string"
+            },
+            "name": {
+              "description": "The name of the ServiceRole object being referenced.",
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "string"
+            }
+          }
+        },
+        "subjects": {
+          "description": "List of subjects that are assigned the ServiceRole object.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "group": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "groups": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "ips": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "names": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "namespaces": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notGroups": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notIps": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notNames": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "notNamespaces": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "properties": {
+                "description": "Optional.",
+                "type": "object",
+                "additionalProperties": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "user": {
+                "description": "Optional.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "rbac.istio.io",
+      "kind": "ServiceRoleBinding",
+      "version": "v1alpha1"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}

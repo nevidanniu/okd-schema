@@ -1,0 +1,94 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "description": "Describes the rules used to configure Mixer's policy and telemetry features. See more details at: https://istio.io/docs/reference/config/policy-and-telemetry/istio.policy.v1beta1.html",
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "description": "The set of attributes this Istio component will be responsible for producing at runtime.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "description": "A human-readable description of the attribute's purpose.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "valueType": {
+                "description": "The type of data carried by this attribute.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "VALUE_TYPE_UNSPECIFIED",
+                  "STRING",
+                  "INT64",
+                  "DOUBLE",
+                  "BOOL",
+                  "TIMESTAMP",
+                  "IP_ADDRESS",
+                  "EMAIL_ADDRESS",
+                  "URI",
+                  "DNS_NAME",
+                  "DURATION",
+                  "STRING_MAP"
+                ]
+              }
+            }
+          }
+        },
+        "name": {
+          "description": "Name of the component producing these attributes.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        },
+        "revision": {
+          "description": "The revision of this document.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "config.istio.io",
+      "kind": "attributemanifest",
+      "version": "v1alpha2"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}

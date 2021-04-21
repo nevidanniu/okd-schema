@@ -1,0 +1,245 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "description": "Describes the rules used to configure Mixer's policy and telemetry features. See more details at: https://istio.io/docs/reference/config/policy-and-telemetry/istio.policy.v1beta1.html",
+      "type": "object",
+      "properties": {
+        "actions": {
+          "description": "The actions that will be executed when match evaluates to `true`.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "handler": {
+                "description": "Fully qualified name of the handler to invoke.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "instances": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              },
+              "name": {
+                "description": "A handle to refer to the results of the action.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        },
+        "match": {
+          "description": "Match is an attribute based predicate.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        },
+        "requestHeaderOperations": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Header name literal value.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "operation": {
+                "description": "Header operation type.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "REPLACE",
+                  "REMOVE",
+                  "APPEND"
+                ]
+              },
+              "values": {
+                "description": "Header value expressions.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "responseHeaderOperations": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Header name literal value.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              },
+              "operation": {
+                "description": "Header operation type.",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "REPLACE",
+                  "REMOVE",
+                  "APPEND"
+                ]
+              },
+              "values": {
+                "description": "Header value expressions.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                }
+              }
+            }
+          }
+        },
+        "sampling": {
+          "type": "object",
+          "properties": {
+            "random": {
+              "description": "Provides filtering of actions based on random selection per request.",
+              "type": "object",
+              "properties": {
+                "attributeExpression": {
+                  "description": "Specifies an attribute expression to use to override the numerator in the `percent_sampled` field.",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "string"
+                },
+                "percentSampled": {
+                  "description": "The default sampling rate, expressed as a percentage.",
+                  "type": "object",
+                  "properties": {
+                    "denominator": {
+                      "description": "Specifies the denominator.",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "HUNDRED",
+                        "TEN_THOUSAND"
+                      ]
+                    },
+                    "numerator": {
+                      "description": "Specifies the numerator.",
+                      "type": "integer"
+                    }
+                  }
+                },
+                "useIndependentRandomness": {
+                  "description": "By default sampling will be based on the value of the request header `x-request-id`.",
+                  "type": "boolean"
+                }
+              }
+            },
+            "rateLimit": {
+              "type": "object",
+              "properties": {
+                "maxUnsampledEntries": {
+                  "description": "Number of entries to allow during the `sampling_duration` before sampling is enforced.",
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "samplingDuration": {
+                  "description": "Window in which to enforce the sampling rate.",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "samplingRate": {
+                  "description": "The rate at which to sample entries once the unsampled limit has been reached.",
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "config.istio.io",
+      "kind": "rule",
+      "version": "v1alpha2"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}

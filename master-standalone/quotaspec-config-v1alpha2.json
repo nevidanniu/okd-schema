@@ -1,0 +1,118 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "description": "Determines the quotas used for individual requests.",
+      "type": "object",
+      "properties": {
+        "rules": {
+          "description": "A list of Quota rules.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "match": {
+                "description": "If empty, match all request.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "clause": {
+                      "description": "Map of attribute names to StringMatch type.",
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "exact": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          },
+                          "prefix": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          },
+                          "regex": {
+                            "description": "RE2 style regex-based match (https://github.com/google/re2/wiki/Syntax).",
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "quotas": {
+                "description": "The list of quotas to charge.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "charge": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "quota": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "config.istio.io",
+      "kind": "QuotaSpec",
+      "version": "v1alpha2"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}

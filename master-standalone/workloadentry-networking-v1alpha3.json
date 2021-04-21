@@ -1,0 +1,91 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "description": "Configuration affecting VMs onboarded into the mesh. See more details at: https://istio.io/docs/reference/config/networking/workload-entry.html",
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        },
+        "labels": {
+          "description": "One or more labels associated with the endpoint.",
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "string"
+          }
+        },
+        "locality": {
+          "description": "The locality associated with the endpoint.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        },
+        "network": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        },
+        "ports": {
+          "description": "Set of ports associated with the endpoint.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "serviceAccount": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "string"
+        },
+        "weight": {
+          "description": "The load balancing weight associated with the endpoint.",
+          "type": "integer"
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "networking.istio.io",
+      "kind": "WorkloadEntry",
+      "version": "v1alpha3"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}

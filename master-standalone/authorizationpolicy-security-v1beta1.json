@@ -1,0 +1,387 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+      "$ref": "_definitions.json#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2"
+    },
+    "spec": {
+      "description": "Configuration for access control on workloads. See more details at: https://istio.io/docs/reference/config/security/authorization-policy.html",
+      "type": "object",
+      "properties": {
+        "action": {
+          "description": "Optional.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "ALLOW",
+            "DENY"
+          ]
+        },
+        "rules": {
+          "description": "Optional.",
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "description": "Optional.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "description": "Source specifies the source of a request.",
+                      "type": "object",
+                      "properties": {
+                        "ipBlocks": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "namespaces": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notIpBlocks": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notNamespaces": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notPrincipals": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notRequestPrincipals": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "principals": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "requestPrincipals": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "to": {
+                "description": "Optional.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "operation": {
+                      "description": "Operation specifies the operation of a request.",
+                      "type": "object",
+                      "properties": {
+                        "hosts": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "methods": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notHosts": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notMethods": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notPaths": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "notPorts": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "paths": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        },
+                        "ports": {
+                          "description": "Optional.",
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "when": {
+                "description": "Optional.",
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "description": "The name of an Istio attribute.",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "string"
+                    },
+                    "notValues": {
+                      "description": "Optional.",
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "string"
+                      }
+                    },
+                    "values": {
+                      "description": "Optional.",
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "items": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "selector": {
+          "description": "Optional.",
+          "type": "object",
+          "properties": {
+            "matchLabels": {
+              "type": "object",
+              "additionalProperties": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "status": {
+      "x-kubernetes-preserve-unknown-fields": true
+    }
+  },
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "security.istio.io",
+      "kind": "AuthorizationPolicy",
+      "version": "v1beta1"
+    }
+  ],
+  "$schema": "http://json-schema.org/schema#"
+}
